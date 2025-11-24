@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "visit_syria_app",
+      name: "visit_syria_application",
       script: "server.js",
       instances: 1,
       exec_mode: "cluster",
@@ -37,8 +37,7 @@ module.exports = {
       restart_delay: 1000,
       max_restarts: 10,
       // Additional settings for performance optimization
-     max_memory_restart: "1G",
-      node_args: "--max-old-space-size=1024",
+     max_memory_restart: "1G", 
       error_file: "/root/.pm2/logs/visit_syria_application-error.log",
       out_file: "/root/.pm2/logs/visit_syria_application-out.log",
       log_date_format: "YYYY-MM-DD HH:mm Z",
@@ -60,3 +59,4 @@ module.exports = {
 // pm2 monit                  - Monitor resources
 // pm2 save                   - Save current process list
 // pm2 startup                - Setup startup script
+
