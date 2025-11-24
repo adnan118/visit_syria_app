@@ -14,9 +14,9 @@ module.exports = {
         ACCESS_TOKEN_SECRET: "vistsyriav11234",
         REFRESH_TOKEN_SECRET: "vist3syria2v1",
         // MySQL Database Configuration
-        DB_HOST:  "0.0.0.0",
-        DB_USER: "root",
-        DB_PASSWORD: "",
+        DB_HOST: "127.0.0.1",
+        DB_USER: "vs_user",
+        DB_PASSWORD: "Vs123456!",
         DB_NAME: "vs_application_db",
         DB_PORT: 3306,
 
@@ -59,5 +59,4 @@ module.exports = {
 // pm2 monit                  - Monitor resources
 // pm2 save                   - Save current process list
 // pm2 startup                - Setup startup script
-
 
