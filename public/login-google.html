@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل دخول بـ Google و Facebook</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #4285f5;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 200px;
+    }
+    button:hover {
+      background-color: #3367d6;
+    }
+    #facebook-login {
+      background-color: #4267B2;
+    }
+    #facebook-login:hover {
+      background-color: #3b5998;
+    }
+    .token {
+      margin: 10px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      word-wrap: break-word;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .copy-btn {
+      background-color: #28a745;
+    }
+    .copy-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>تسجيل دخول بـ Google و Facebook</h1>
+    <button id="google-login">تسجيل الدخول بـ Google</button>
+    <button id="facebook-login">تسجيل الدخول بـ Facebook</button>
+
+    <div id="tokens" style="display: none;">
+      <h2>التوكنات</h2>
+      <div class="token" id="id-token">
+        <strong>ID Token:</strong><br />
+        <span id="id-token-value"></span>
+      </div>
+      <button class="copy-btn" onclick="copyToClipboard('id-token-value')">نسخ ID Token</button>
+
+      <div class="token" id="custom-token">
+        <strong>Custom Token:</strong><br />
+        <span id="custom-token-value"></span>
+      </div>
+      <button class="copy-btn" onclick="copyToClipboard('custom-token-value')">نسخ Custom Token</button>
+
+      <div class="token" id="expires-in">
+        <strong>مدة الصلاحية:</strong><br />
+        <span id="expires-in-value"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Firebase Config - استخدم القيم الحقيقية من Firebase Console
+    const firebaseConfig = {
+      apiKey: "AIzaSyD1uDbFCUJbf7Vqjbdnrds1nuXIqNfZ-7Y",
+      authDomain: "visit-syria-c5bcf.firebaseapp.com",
+      projectId: "visit-syria-c5bcf",
+      storageBucket: "visit-syria-c5bcf.firebasestorage.app",
+      messagingSenderId: "424036089959",
+      appId: "1:424036089959:web:aec28f45a8f533be3854c2",
+      measurementId: "G-Z5BC93RLV6"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Google Login Button
+    document.getElementById("google-login").addEventListener("click", () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      performSignIn(provider, "google");
+    });
+
+    // Facebook Login Button
+    document.getElementById("facebook-login").addEventListener("click", () => {
+      const provider = new firebase.auth.FacebookAuthProvider();
+      // إضافة الصلاحيات المطلوبة
+      provider.addScope('email');
+      provider.addScope('public_profile');
+      performSignIn(provider, "facebook");
+    });
+
+    // دالة مشتركة لتسجيل الدخول
+    function performSignIn(provider, providerName) {
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          const user = result.user;
+          console.log("User:", user);
+
+          // Get ID Token
+          user.getIdToken().then(idToken => {
+            document.getElementById("id-token-value").textContent = idToken;
+            // Calculate expiration time (ID Token expires in 60 minutes)
+            const expiresIn = 60 * 60; // seconds
+            document.getElementById("expires-in-value").textContent = `${expiresIn} ثانية (${Math.floor(expiresIn / 60)} دقيقة)`;
+          });
+
+          // Create Custom Token (for testing only)
+          fetch('/api/v1/create-custom-token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uid: user.uid })
+          })
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("custom-token-value").textContent = data.customToken;
+          });
+
+          document.getElementById("tokens").style.display = "block";
+        })
+        .catch(error => {
+          alert("خطأ في تسجيل الدخول: " + error.message);
+        });
+    }
+
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      navigator.clipboard.writeText(element.textContent).then(() => {
+        alert("تم نسخ التوكن!");
+      }).catch(err => {
+        alert("خطأ في النسخ: " + err);
+      });
+    }
+  </script>
+</body>
+</html>
