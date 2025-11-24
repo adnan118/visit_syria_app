@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>توثيق حفظ المنشورات - تطبيق زيارة سوريا</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+      direction: rtl;
+      text-align: right;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.7;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #8e44ad, #6c3483);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    
+    h2 {
+      color: #8e44ad;
+      border-bottom: 2px solid #e4e6eb;
+      padding-bottom: 10px;
+      margin-top: 30px;
+    }
+    
+    h3 {
+      color: #6c3483;
+      margin-top: 25px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .endpoint {
+      background: #f0f2f5;
+      border-left: 4px solid #8e44ad;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .method {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-left: 10px;
+    }
+    
+    .post {
+      background: #42b72a;
+      color: white;
+    }
+    
+    .get {
+      background: #1877f2;
+      color: white;
+    }
+    
+    .put {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .delete {
+      background: #ef4444;
+      color: white;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: right;
+      border-bottom: 1px solid #e4e6eb;
+    }
+    
+    th {
+      background: #f0f2f5;
+      font-weight: 600;
+      color: #1c1e21;
+    }
+    
+    tr:hover {
+      background: #f9f9f9;
+    }
+    
+    code {
+      background: #f0f2f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.95rem;
+    }
+    
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      margin: 20px 0;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: #8e44ad;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: #6c3483;
+    }
+    
+    .mermaid {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+    
+    .toc {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .toc ul {
+      list-style: none;
+      padding-right: 0;
+    }
+    
+    .toc li {
+      margin: 10px 0;
+      padding: 8px 15px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .toc li:hover {
+      background: #f0f2f5;
+    }
+    
+    .toc a {
+      text-decoration: none;
+      color: #1c1e21;
+      font-weight: 500;
+    }
+    
+    .toc a:hover {
+      color: #8e44ad;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      margin-top: 40px;
+      border-top: 1px solid #e4e6eb;
+      color: #606770;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>توثيق حفظ المنشورات</h1>
+      <p>دليل شامل لجميع عمليات حفظ المنشورات في تطبيق زيارة سوريا</p>
+    </header>
+    
+    <div class="toc">
+      <h2>جدول المحتويات</h2>
+      <ul>
+        <li><a href="#overview">نظرة عامة</a></li>
+        <li><a href="#save-structure">هيكل الحفظ</a></li>
+        <li><a href="#toggle-save">حفظ/إلغاء حفظ منشور</a></li>
+        <li><a href="#list-saved">عرض المنشورات المحفوظة</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2 id="overview">نظرة عامة</h2>
+      <p>تتيح واجهة برمجة التطبيقات (API) الخاصة بالحفظ للمستخدمين حفظ المنشورات المفضلة لديهم وإدارتها. تشمل الميزات:</p>
+      <ul>
+        <li>حفظ المنشورات وإلغاء الحفظ</li>
+        <li>عرض قائمة بالمنشورات المحفوظة</li>
+        <li>تبديل حالة الحفظ تلقائياً</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2 id="save-structure">هيكل الحفظ</h2>
+      <p>كل عملية حفظ تحتوي على الحقول التالية:</p>
+      
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>رقم</td>
+          <td>المعرف الفريد لعملية الحفظ</td>
+        </tr>
+        <tr>
+          <td>postId</td>
+          <td>رقم</td>
+          <td>معرف المنشور المحفوظ</td>
+        </tr>
+        <tr>
+          <td>userId</td>
+          <td>رقم</td>
+          <td>معرف المستخدم الذي قام بالحفظ</td>
+        </tr>
+        <tr>
+          <td>createdAt</td>
+          <td>تاريخ</td>
+          <td>تاريخ الحفظ</td>
+        </tr>
+        <tr>
+          <td>updatedAt</td>
+          <td>تاريخ</td>
+          <td>تاريخ آخر تحديث لعملية الحفظ</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="card">
+      <h2 id="toggle-save">حفظ/إلغاء حفظ منشور</h2>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/saves/:postId/toggle</code></p>
+      <p>حفظ منشور أو إلغاء حفظه (للمستخدمين المسجلين فقط).</p>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/saves/123/toggle" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h3>مثال على الاستجابة (عند الحفظ)</h3>
+      <pre>{
+  "status": "success",
+  "message": "Post saved successfully",
+  "data": {
+    "saved": true
+  }
+}</pre>
+      
+      <h3>مثال على الاستجابة (عند إلغاء الحفظ)</h3>
+      <pre>{
+  "status": "success",
+  "message": "Post unsaved successfully",
+  "data": {
+    "saved": false
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="list-saved">عرض المنشورات المحفوظة</h2>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/saves/me</code></p>
+      <p>عرض قائمة بالمنشورات المحفوظة من قبل المستخدم الحالي.</p>
+      
+      <h3>معلمات الاستعلام</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>الافتراضي</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>page</td>
+          <td>رقم</td>
+          <td>1</td>
+          <td>رقم الصفحة</td>
+        </tr>
+        <tr>
+          <td>limit</td>
+          <td>رقم</td>
+          <td>20</td>
+          <td>عدد المنشورات في الصفحة</td>
+        </tr>
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/saves/me?page=1&limit=10" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "data": [
+    // مصفوفة من المنشورات المحفوظة
+  ],
+  "pagination": {
+    "currentPage": 1,
+    "totalPages": 5,
+    "totalSaved": 45,
+    "hasNext": true,
+    "hasPrev": false,
+    "pageSize": 10
+  }
+}</pre>
+    </div>
+    
+    <footer>
+      <p>© 2025 تطبيق زيارة سوريا. جميع الحقوق محفوظة.</p>
+    </footer>
+  </div>
+</body>
+</html>

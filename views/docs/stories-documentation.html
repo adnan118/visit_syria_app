@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>توثيق إدارة الستوريز - تطبيق زيارة سوريا</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+      direction: rtl;
+      text-align: right;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.7;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #8e44ad, #6c3483);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    
+    h2 {
+      color: #8e44ad;
+      border-bottom: 2px solid #e4e6eb;
+      padding-bottom: 10px;
+      margin-top: 30px;
+    }
+    
+    h3 {
+      color: #6c3483;
+      margin-top: 25px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .endpoint {
+      background: #f0f2f5;
+      border-left: 4px solid #8e44ad;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .method {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-left: 10px;
+    }
+    
+    .post {
+      background: #42b72a;
+      color: white;
+    }
+    
+    .get {
+      background: #1877f2;
+      color: white;
+    }
+    
+    .put {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .delete {
+      background: #ef4444;
+      color: white;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: right;
+      border-bottom: 1px solid #e4e6eb;
+    }
+    
+    th {
+      background: #f0f2f5;
+      font-weight: 600;
+      color: #1c1e21;
+    }
+    
+    tr:hover {
+      background: #f9f9f9;
+    }
+    
+    code {
+      background: #f0f2f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.95rem;
+    }
+    
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      margin: 20px 0;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: #8e44ad;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: #6c3483;
+    }
+    
+    .mermaid {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+    
+    .toc {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .toc ul {
+      list-style: none;
+      padding-right: 0;
+    }
+    
+    .toc li {
+      margin: 10px 0;
+      padding: 8px 15px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .toc li:hover {
+      background: #f0f2f5;
+    }
+    
+    .toc a {
+      text-decoration: none;
+      color: #1c1e21;
+      font-weight: 500;
+    }
+    
+    .toc a:hover {
+      color: #8e44ad;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      margin-top: 40px;
+      border-top: 1px solid #e4e6eb;
+      color: #606770;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>توثيق إدارة الستوريز</h1>
+      <p>دليل شامل لجميع عمليات إدارة الستوريز في تطبيق زيارة سوريا</p>
+    </header>
+    
+    <div class="toc">
+      <h2>جدول المحتويات</h2>
+      <ul>
+        <li><a href="#overview">نظرة عامة</a></li>
+        <li><a href="#story-structure">هيكل الستوري</a></li>
+        <li><a href="#create-story">إنشاء ستوري</a></li>
+        <li><a href="#list-stories">عرض الستوريز</a></li>
+        <li><a href="#view-story">عرض ستوري محدد</a></li>
+        <li><a href="#delete-story">حذف ستوري</a></li>
+        <li><a href="#story-visibility">رؤية الستوريز</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2 id="overview">نظرة عامة</h2>
+      <p>تتيح واجهة برمجة التطبيقات (API) الخاصة بالستوريز للمستخدمين إنشاء محتوى قصير-lived ومشاركته. تشمل الميزات:</p>
+      <ul>
+        <li>إنشاء وتعديل الستوريز مع دعم الوسائط (صور ومقاطع فيديو)</li>
+        <li>عرض الستوريز مع تصفية حسب المستخدم</li>
+        <li>إدارة رؤية الستوريز (تنتهي تلقائياً بعد 24 ساعة)</li>
+        <li>الوصول إلى الستوريز الخاصة بي</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2 id="story-structure">هيكل الستوري</h2>
+      <p>كل ستوري يحتوي على الحقول التالية:</p>
+      
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>author</td>
+          <td>رقم</td>
+          <td>معرف المؤلف</td>
+        </tr>
+        <tr>
+          <td>caption</td>
+          <td>نص</td>
+          <td>وصف الستوري</td>
+        </tr>
+        <tr>
+          <td>location</td>
+          <td>نص</td>
+          <td>الموقع الجغرافي</td>
+        </tr>
+        <tr>
+          <td>media</td>
+          <td>مصفوفة</td>
+          <td>الوسائط المرفقة (صور ومقاطع فيديو)</td>
+        </tr>
+        <tr>
+          <td>tags</td>
+          <td>مصفوفة</td>
+          <td>معرفات الوسوم المرتبطة بالستوري</td>
+        </tr>
+        <tr>
+          <td>expiresAt</td>
+          <td>تاريخ</td>
+          <td>تاريخ انتهاء الستوري (24 ساعة من الإنشاء)</td>
+        </tr>
+        <tr>
+          <td>views</td>
+          <td>مصفوفة</td>
+          <td>معرفات المستخدمين الذين شاهدوا الستوري</td>
+        </tr>
+        <tr>
+          <td>viewCount</td>
+          <td>رقم</td>
+          <td>عدد المشاهدات</td>
+        </tr>
+        <tr>
+          <td>createdAt</td>
+          <td>تاريخ</td>
+          <td>تاريخ الإنشاء</td>
+        </tr>
+        <tr>
+          <td>updatedAt</td>
+          <td>تاريخ</td>
+          <td>تاريخ آخر تحديث</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="card">
+      <h2 id="create-story">إنشاء ستوري</h2>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/stories</code></p>
+      <p>إنشاء ستوري جديد مع دعم رفع الصور ومقاطع الفيديو.</p>
+      
+      <h3>معلمات الطلب</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>caption</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>وصف الستوري</td>
+        </tr>
+        <tr>
+          <td>location</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>الموقع الجغرافي</td>
+        </tr>
+        <tr>
+          <td>tags</td>
+          <td>مصفوفة أو نص</td>
+          <td>لا</td>
+          <td>معرفات الوسوم (مفصولة بفواصل أو مصفوفة)</td>
+        </tr>
+        <tr>
+          <td>images</td>
+          <td>ملفات</td>
+          <td>لا</td>
+          <td>الصور المرفقة (يمكن رفع حتى 5 صور)</td>
+        </tr>
+        <tr>
+          <td>videos</td>
+          <td>ملفات</td>
+          <td>لا</td>
+          <td>مقاطع الفيديو المرفقة (يمكن رفع حتى 5 مقاطع فيديو)</td>
+        </tr>
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/stories" \
+  -H "Authorization: Bearer &lt;access_token&gt;" \
+  -F "caption=وصف الستوري" \
+  -F "location=دمشق" \
+  -F "tags=1,2,3" \
+  -F "images=@image1.jpg" \
+  -F "videos=@video1.mp4"</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "data": {
+    "author": 456,
+    "caption": "وصف الستوري",
+    "location": "دمشق",
+    "media": [
+      {
+        "type": "image",
+        "file": "compressed-image1-1234567890.jpg"
+      },
+      {
+        "type": "video",
+        "file": "compressed-video1-1234567890.mp4"
+      }
+    ],
+    "tags": [1, 2, 3],
+    "expiresAt": "2025-01-16T10:30:00.000Z",
+    "views": [],
+    "viewCount": 0,
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-15T10:30:00.000Z"
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="list-stories">عرض الستوريز</h2>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/stories/feed</code></p>
+      <p>عرض الستوريز العامة من المستخدمين النشطين.</p>
+      
+      <h3>معلمات الاستعلام</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>الافتراضي</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>page</td>
+          <td>رقم</td>
+          <td>1</td>
+          <td>رقم الصفحة</td>
+        </tr>
+        <tr>
+          <td>limit</td>
+          <td>رقم</td>
+          <td>20</td>
+          <td>عدد الستوريز في الصفحة</td>
+        </tr>
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/stories/feed?page=1&limit=10" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "data": [
+    // مصفوفة من الستوريز
+  ],
+  "pagination": {
+    "currentPage": 1,
+    "totalPages": 5,
+    "totalStories": 45,
+    "hasNext": true,
+    "hasPrev": false,
+    "pageSize": 10
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="view-story">عرض ستوري محدد</h2>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/stories/:id/view</code></p>
+      <p>عرض ستوري محدد وزيادة عدد المشاهدات تلقائياً.</p>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/stories/123/view" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "message": "Story viewed",
+  "data": {
+    "author": 456,
+    "caption": "وصف الستوري",
+    "location": "دمشق",
+    "media": [
+      {
+        "type": "image",
+        "file": "compressed-image1-1234567890.jpg"
+      }
+    ],
+    "tags": [1, 2, 3],
+    "expiresAt": "2025-01-16T10:30:00.000Z",
+    "views": [],
+    "viewCount": 25,
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-15T11:00:00.000Z"
+  }
+}</pre>
+    </div>
+    
+     
+    <div class="card">
+      <h2 id="delete-story">حذف ستوري</h2>
+      <p><strong>نقطة النهاية:</strong> <code>DELETE /api/v1/stories/:id</code></p>
+      <p>حذف ستوري (للمؤلف فقط).</p>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X DELETE "https://visitsyria.fun/api/v1/stories/123" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "message": "Story deleted successfully"
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="story-visibility">رؤية الستوريز</h2>
+      
+      <h3>عرض ستوريزي</h3>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/stories/me</code></p>
+      <p>عرض جميع ستوريزي (تشمل المنتهية).</p>
+    </div>
+    
+    <footer>
+      <p>© 2025 تطبيق زيارة سوريا. جميع الحقوق محفوظة.</p>
+    </footer>
+  </div>
+</body>
+</html>

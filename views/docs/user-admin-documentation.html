@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>توثيق إدارة المستخدمين - تطبيق زيارة سوريا</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+      direction: rtl;
+      text-align: right;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.7;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2c3e50, #1a2530);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    
+    h2 {
+      color: #2c3e50;
+      border-bottom: 2px solid #e4e6eb;
+      padding-bottom: 10px;
+      margin-top: 30px;
+    }
+    
+    h3 {
+      color: #1a2530;
+      margin-top: 25px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .endpoint {
+      background: #f0f2f5;
+      border-left: 4px solid #2c3e50;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .method {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-left: 10px;
+    }
+    
+    .post {
+      background: #42b72a;
+      color: white;
+    }
+    
+    .get {
+      background: #1877f2;
+      color: white;
+    }
+    
+    .put {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .delete {
+      background: #ef4444;
+      color: white;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: right;
+      border-bottom: 1px solid #e4e6eb;
+    }
+    
+    th {
+      background: #f0f2f5;
+      font-weight: 600;
+      color: #1c1e21;
+    }
+    
+    tr:hover {
+      background: #f9f9f9;
+    }
+    
+    code {
+      background: #f0f2f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.95rem;
+    }
+    
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      margin: 20px 0;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: #2c3e50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: #1a2530;
+    }
+    
+    .mermaid {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+    
+    .toc {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .toc ul {
+      list-style: none;
+      padding-right: 0;
+    }
+    
+    .toc li {
+      margin: 10px 0;
+      padding: 8px 15px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .toc li:hover {
+      background: #f0f2f5;
+    }
+    
+    .toc a {
+      text-decoration: none;
+      color: #1c1e21;
+      font-weight: 500;
+    }
+    
+    .toc a:hover {
+      color: #2c3e50;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      margin-top: 40px;
+      color: #65676b;
+      border-top: 1px solid #e4e6eb;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>توثيق إدارة المستخدمين</h1>
+      <p>تطبيق زيارة سوريا - نظام شامل لإدارة المستخدمين والملفات الشخصية</p>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="toc">
+      <h2>جدول المحتويات</h2>
+      <ul>
+        <li><a href="#overview">نظرة عامة</a></li>
+        <li><a href="#user-endpoints">نقاط نهاية المستخدمين</a></li>
+        <li><a href="#admin-endpoints">نقاط نهاية الإدارة</a></li>
+        <li><a href="#profile-management">إدارة الملف الشخصي</a></li>
+        <li><a href="#user-interests">اهتمامات المستخدمين</a></li>
+        <li><a href="#admin-user-management">إدارة المستخدمين من قبل الإدارة</a></li>
+        <li><a href="#security">اعتبارات الأمان</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2 id="overview">نظرة عامة</h2>
+      <p>يوفر تطبيق زيارة سوريا نظام إدارة شامل للمستخدمين يشمل:</p>
+      <ol>
+        <li><strong>إدارة الملف الشخصي</strong> - تحديث البيانات الشخصية وصورة الملف الشخصي</li>
+        <li><strong>إدارة الاهتمامات</strong> - إضافة وإزالة الاهتمامات (الوسوم)</li>
+        <li><strong>إدارة المستخدمين من قبل الإدارة</strong> - عرض وتحديث وحذف المستخدمين</li>
+      </ol>
+    </div>
+    
+    <div class="card">
+      <h2 id="user-endpoints">نقاط نهاية المستخدمين</h2>
+      
+      <div class="endpoint">
+        <span class="method get">GET</span>
+        <strong>/api/v1/users/:id</strong> - عرض ملف شخصي عام
+      </div>
+      
+      <div class="endpoint">
+        <span class="method put">PUT</span>
+        <strong>/api/v1/users/:id</strong> - تحديث الملف الشخصي
+      </div>
+      
+      <div class="endpoint">
+        <span class="method delete">DELETE</span>
+        <strong>/api/v1/users/:id</strong> - حذف المستخدم
+      </div>
+      
+      <div class="endpoint">
+        <span class="method get">GET</span>
+        <strong>/api/v1/users/:userId/interests</strong> - عرض اهتمامات المستخدم
+      </div>
+      
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <strong>/api/v1/users/:userId/interests</strong> - إضافة اهتمام للمستخدم
+      </div>
+      
+      <div class="endpoint">
+        <span class="method delete">DELETE</span>
+        <strong>/api/v1/users/:userId/interests/:tagId</strong> - إزالة اهتمام من المستخدم
+      </div>
+  
+      
+    
+      
+      <div class="endpoint">
+        <span class="method put">PUT</span>
+        <strong>/api/v1/users/:userId/interests</strong> - تحديث جميع اهتمامات المستخدم
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2 id="admin-endpoints">نقاط نهاية الإدارة</h2>
+      
+      <div class="endpoint">
+        <span class="method get">GET</span>
+        <strong>/api/v1/admin/users</strong> - عرض جميع المستخدمين (للإدارة)
+      </div>
+      
+      <div class="endpoint">
+        <span class="method get">GET</span>
+        <strong>/api/v1/admin/users/:id</strong> - عرض مستخدم محدد (للإدارة)
+      </div>
+      
+      <div class="endpoint">
+        <span class="method put">PUT</span>
+        <strong>/api/v1/admin/users/:id</strong> - تحديث بيانات المستخدم (للإدارة)
+      </div>
+      
+      <div class="endpoint">
+        <span class="method delete">DELETE</span>
+        <strong>/api/v1/admin/users/:id</strong> - حذف مستخدم (للإدارة)
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2 id="profile-management">إدارة الملف الشخصي</h2>
+      
+      <h3>عرض الملف الشخصي</h3>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/users/:id</code></p>
+      <p>عرض ملف شخصي عام باستخدام المعرف الرقمي أو اسم المستخدم.</p>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/users/1" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "data": {
+    "id": 1,
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "username": "محمد أحمد",
+    "email": "mohammad@example.com",
+    "mobile": "0912345678",
+    "bio": "مطور برمجيات من سوريا",
+    "image": "user_1234567890.jpg",
+    "imageUrl": "https://visitsyria.fun/uploads/users/user_1234567890.jpg",
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-20T14:45:00.000Z"
+  }
+}</pre>
+      
+      <h3>تحديث الملف الشخصي</h3>
+      <p><strong>نقطة النهاية:</strong> <code>PUT /api/v1/users/:id</code></p>
+      <p>تحديث بيانات الملف الشخصي ورفع صورة جديدة.</p>
+      
+      <h4>معلمات الطلب</h4>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>firstName</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>الاسم الأول للمستخدم (2-50 حرف)</td>
+        </tr>
+        <tr>
+          <td>lastName</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>اسم العائلة للمستخدم (2-50 حرف)</td>
+        </tr>
+        <tr>
+          <td>username</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>اسم المستخدم (3-30 حرف، أحرف وأرقام ونقاط وشرطات)</td>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>عنوان بريد إلكتروني صالح</td>
+        </tr>
+        <tr>
+          <td>mobile</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>رقم الجوال (9-15 رقماً)</td>
+        </tr>
+        <tr>
+          <td>bio</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>نبذة عن المستخدم</td>
+        </tr>
+        <tr>
+          <td>image</td>
+          <td>ملف</td>
+          <td>لا</td>
+          <td>صورة الملف الشخصي (JPG, PNG, WEBP)</td>
+        </tr>
+      </table>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X PUT "https://visitsyria.fun/api/v1/users/1" \
+  -H "Authorization: Bearer &lt;access_token&gt;" \
+  -F "firstName=محمد" \
+  -F "lastName=أحمد" \
+  -F "bio=مطور برمجيات من سوريا" \
+  -F "image=@profile.jpg"</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "message": "User updated successfully",
+  "data": {
+    "id": 1,
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "username": "محمد أحمد",
+    "email": "mohammad@example.com",
+    "mobile": "0912345678",
+    "bio": "مطور برمجيات من سوريا",
+    "image": "user_1234567890.jpg",
+    "imageUrl": "https://visitsyria.fun/uploads/users/user_1234567890.jpg",
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-20T15:00:00.000Z"
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="user-interests">اهتمامات المستخدمين</h2>
+      
+      <h3>عرض اهتمامات المستخدم</h3>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/users/:userId/interests</code></p>
+      <p>عرض جميع الاهتمامات (الوسوم) المرتبطة بالمستخدم.</p>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/users/1/interests" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "data": [
+    {
+      "id": 1,
+      "name": "تاريخ سوريا",
+      "description": "كل ما يتعلق بالتاريخ السوري القديم والحديث"
+    },
+    {
+      "id": 5,
+      "name": "美食文化",
+      "description": " Syrian cuisine and culinary traditions"
+    }
+  ]
+}</pre>
+      
+      <h3>إضافة اهتمام للمستخدم</h3>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/users/:userId/interests</code></p>
+      <p>ربط اهتمام (وسم) بالمستخدم.</p>
+      
+      <h4>معلمات الطلب</h4>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>tagId</td>
+          <td>رقم</td>
+          <td>نعم</td>
+          <td>معرف الوسم المراد إضافته</td>
+        </tr>
+      </table>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/users/1/interests" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer &lt;access_token&gt;" \
+  -d '{"tagId": 1}'</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "message": "Interest added successfully"
+}</pre>
+      
+      <h3>إزالة اهتمام من المستخدم</h3>
+      <p><strong>نقطة النهاية:</strong> <code>DELETE /api/v1/users/:userId/interests/:tagId</code></p>
+      <p>إزالة اهتمام (وسم) من المستخدم.</p>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X DELETE "https://visitsyria.fun/api/v1/users/1/interests/1" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "message": "Interest removed successfully"
+}</pre>
+      
+    
+   
+      
+      <h3>تحديث جميع اهتمامات المستخدم</h3>
+      <p><strong>نقطة النهاية:</strong> <code>PUT /api/v1/users/:userId/interests</code></p>
+      <p>تحديث جميع اهتمامات المستخدم (استبدال القائمة الحالية).</p>
+      
+      <h4>معلمات الطلب</h4>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>tagIds</td>
+          <td>مصفوفة أرقام</td>
+          <td>نعم</td>
+          <td>معرفات الوسوم الجديدة للمستخدم</td>
+        </tr>
+      </table>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X PUT "https://visitsyria.fun/api/v1/users/1/interests" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer &lt;access_token&gt;" \
+  -d '{"tagIds": [2, 7, 12]}'</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "message": "User interests updated successfully"
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="admin-user-management">إدارة المستخدمين من قبل الإدارة</h2>
+      
+      <h3>عرض جميع المستخدمين</h3>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/admin/users</code></p>
+      <p>عرض قائمة بجميع المستخدمين مع دعم التصفح والترتيب والتصفية.</p>
+      
+      <h4>معلمات الاستعلام</h4>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>الافتراضي</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>page</td>
+          <td>رقم</td>
+          <td>1</td>
+          <td>رقم الصفحة</td>
+        </tr>
+        <tr>
+          <td>limit</td>
+          <td>رقم</td>
+          <td>20</td>
+          <td>عدد المستخدمين في الصفحة (1-100)</td>
+        </tr>
+        <tr>
+          <td>sortBy</td>
+          <td>نص</td>
+          <td>createdAt</td>
+          <td>حقل الترتيب (firstName, lastName, username, email, createdAt, isActive, isAdmin)</td>
+        </tr>
+        <tr>
+          <td>sortOrder</td>
+          <td>نص</td>
+          <td>desc</td>
+          <td>ترتيب الصعود أو النزول (asc, desc)</td>
+        </tr>
+        <tr>
+          <td>search</td>
+          <td>نص</td>
+          <td>-</td>
+          <td>بحث في الاسم الأول، الاسم الأخير، اسم المستخدم، البريد الإلكتروني، أو الجوال</td>
+        </tr>
+        <tr>
+          <td>isActive</td>
+          <td>boolean</td>
+          <td>-</td>
+          <td>تصفية حسب حالة الحساب</td>
+        </tr>
+        <tr>
+          <td>isAdmin</td>
+          <td>boolean</td>
+          <td>-</td>
+          <td>تصفية حسب صلاحيات الإدارة</td>
+        </tr>
+      </table>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/admin/users?page=1&limit=10&sortBy=firstName&sortOrder=asc" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "message": "Users retrieved successfully",
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "firstName": "محمد",
+        "lastName": "أحمد",
+        "username": "محمد أحمد",
+        "email": "mohammad@example.com",
+        "mobile": "0912345678",
+        "bio": "مطور برمجيات من سوريا",
+        "image": "user_1234567890.jpg",
+        "imageUrl": "https://visitsyria.fun/uploads/users/user_1234567890.jpg",
+        "isAdmin": false,
+        "isActive": true,
+        "createdAt": "2025-01-15T10:30:00.000Z",
+        "updatedAt": "2025-01-20T14:45:00.000Z"
+      }
+    ],
+    "pagination": {
+      "currentPage": 1,
+      "totalPages": 5,
+      "totalUsers": 45,
+      "hasNext": true,
+      "hasPrev": false
+    },
+    "userCounts": {
+      "admins": 3,
+      "regularUsers": 42,
+      "total": 45
+    }
+  }
+}</pre>
+      
+      <h3>عرض مستخدم محدد</h3>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/admin/users/:id</code></p>
+      <p>عرض تفاصيل مستخدم محدد من قبل الإدارة.</p>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/admin/users/1" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "message": "User retrieved successfully",
+  "data": {
+    "id": 1,
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "username": "محمد أحمد",
+    "email": "mohammad@example.com",
+    "mobile": "0912345678",
+    "bio": "مطور برمجيات من سوريا",
+    "image": "user_1234567890.jpg",
+    "imageUrl": "https://visitsyria.fun/uploads/users/user_1234567890.jpg",
+    "isAdmin": false,
+    "isActive": true,
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-20T14:45:00.000Z"
+  }
+}</pre>
+      
+      <h3>تحديث بيانات المستخدم</h3>
+      <p><strong>نقطة النهاية:</strong> <code>PUT /api/v1/admin/users/:id</code></p>
+      <p>تحديث بيانات مستخدم محدد من قبل الإدارة.</p>
+      
+      <h4>معلمات الطلب</h4>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>firstName</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>الاسم الأول للمستخدم (2-50 حرف)</td>
+        </tr>
+        <tr>
+          <td>lastName</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>اسم العائلة للمستخدم (2-50 حرف)</td>
+        </tr>
+        <tr>
+          <td>username</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>اسم المستخدم (3-30 حرف، أحرف وأرقام ونقاط وشرطات)</td>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>عنوان بريد إلكتروني صالح</td>
+        </tr>
+        <tr>
+          <td>mobile</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>رقم الجوال (9-15 رقماً)</td>
+        </tr>
+        <tr>
+          <td>bio</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>نبذة عن المستخدم</td>
+        </tr>
+        <tr>
+          <td>isAdmin</td>
+          <td>boolean</td>
+          <td>لا</td>
+          <td>صلاحيات الإدارة</td>
+        </tr>
+        <tr>
+          <td>isActive</td>
+          <td>boolean</td>
+          <td>لا</td>
+          <td>حالة الحساب</td>
+        </tr>
+        <tr>
+          <td>image</td>
+          <td>ملف</td>
+          <td>لا</td>
+          <td>صورة الملف الشخصي (JPG, PNG, WEBP)</td>
+        </tr>
+      </table>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X PUT "https://visitsyria.fun/api/v1/admin/users/1" \
+  -H "Authorization: Bearer &lt;access_token&gt;" \
+  -F "firstName=محمد" \
+  -F "lastName=أحمد" \
+  -F "isAdmin=true" \
+  -F "isActive=true" \
+  -F "image=@profile.jpg"</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "message": "User updated successfully",
+  "data": {
+    "id": 1,
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "username": "محمد أحمد",
+    "email": "mohammad@example.com",
+    "mobile": "0912345678",
+    "bio": "مطور برمجيات من سوريا",
+    "image": "user_1234567890.jpg",
+    "imageUrl": "https://visitsyria.fun/uploads/users/user_1234567890.jpg",
+    "isAdmin": true,
+    "isActive": true,
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-20T15:00:00.000Z"
+  }
+}</pre>
+      
+      <h3>حذف مستخدم</h3>
+      <p><strong>نقطة النهاية:</strong> <code>DELETE /api/v1/admin/users/:id</code></p>
+      <p>حذف مستخدم محدد من قبل الإدارة.</p>
+      
+      <h4>مثال على الطلب</h4>
+      <pre>curl -X DELETE "https://visitsyria.fun/api/v1/admin/users/1" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h4>مثال على الاستجابة</h4>
+      <pre>{
+  "status": "success",
+  "message": "User deleted successfully"
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="security">اعتبارات الأمان</h2>
+      
+      <h3>صلاحيات الوصول</h3>
+      <ul>
+        <li><strong>المستخدمون العاديون</strong> يمكنهم فقط:
+          <ul>
+            <li>عرض ملفهم الشخصي وملفات الآخرين</li>
+            <li>تحديث ملفهم الشخصي</li>
+            <li>إدارة اهتماماتهم</li>
+            <li>حذف حسابهم</li>
+          </ul>
+        </li>
+        <li><strong>المشرفون</strong> يمكنهم:
+          <ul>
+            <li>تنفيذ جميع عمليات المستخدم العادي</li>
+            <li>عرض جميع المستخدمين</li>
+            <li>تحديث بيانات أي مستخدم</li>
+            <li>حذف أي مستخدم</li>
+            <li>تغيير صلاحيات الإدارة والحالة</li>
+          </ul>
+        </li>
+      </ul>
+      
+      <h3>التحقق من الهوية</h3>
+      <ul>
+        <li>جميع نقاط النهاية (عدا عرض الملف الشخصي العام) تتطلب رمز وصول صالح</li>
+        <li>نقاط نهاية الإدارة تتطلب رمز وصول مع صلاحية <code>isAdmin: true</code></li>
+        <li>يتم التحقق من أن المستخدم يمكنه فقط تعديل بيانات حسابه (عدا المشرفين)</li>
+      </ul>
+      
+      <h3>أمان الملفات</h3>
+      <ul>
+        <li>يتم ضغط صور الملف الشخصي تلقائياً لتحسين الأداء</li>
+        <li>يتم التحقق من نوع الملف وحجمه قبل الرفع</li>
+        <li>يتم حذف الصور القديمة تلقائياً عند رفع صور جديدة</li>
+        <li>يتم تخزين الملفات في مجلد منظم حسب النوع</li>
+      </ul>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+      <p>توثيق إدارة المستخدمين - تطبيق زيارة سوريا © 2025</p>
+    </div>
+  </footer>
+</body>
+</html>

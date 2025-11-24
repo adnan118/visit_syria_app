@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Services API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        h2 {
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .get { background-color: #28a745; }
+        .post { background-color: #007bff; }
+        .put { background-color: #ffc107; color: #212529; }
+        .delete { background-color: #dc3545; }
+        .url {
+            font-family: 'Courier New', monospace;
+            background-color: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .example {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emergency Services API Documentation</h1>
+        
+        <p>This API provides endpoints for managing emergency services with support for multilingual titles (Arabic and English), phone numbers, and images.</p>
+        
+        <h2>Base URL</h2>
+        <p><code>https://visitsyria.fun/api/v1/emergency-services</code></p>
+        
+        <h2>Endpoints</h2>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <span class="url">/emergency-services</span>
+            <h3>Get All Emergency Services</h3>
+            <p>Retrieve a list of all emergency services.</p>
+            <h4>Response</h4>
+            <p>Returns a JSON array of emergency service objects.</p>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <span class="url">/emergency-services</span>
+            <h3>Create Emergency Service</h3>
+            <p>Create a new emergency service with Arabic and English titles, phone number, and optional image.</p>
+            
+            <h4>Request Body (multipart/form-data)</h4>
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>titleAr</td>
+                    <td>string</td>
+                    <td class="required">Yes</td>
+                    <td>Arabic title of the emergency service</td>
+                </tr>
+                <tr>
+                    <td>titleEn</td>
+                    <td>string</td>
+                    <td class="required">Yes</td>
+                    <td>English title of the emergency service</td>
+                </tr>
+                <tr>
+                    <td>phoneNumber</td>
+                    <td>string</td>
+                    <td class="required">Yes</td>
+                    <td>Phone number for the emergency service</td>
+                </tr>
+                <tr>
+                    <td>images</td>
+                    <td>file</td>
+                    <td>No</td>
+                    <td>Image file for the emergency service (JPEG, PNG, etc.)</td>
+                </tr>
+            </table>
+            
+            <h4>Response</h4>
+            <p>Returns the created emergency service object.</p>
+            
+            <div class="example">
+                <h4>Example Request</h4>
+                <p>POST /emergency-services</p>
+                <p>Content-Type: multipart/form-data</p>
+                <p>Form Data:</p>
+                <ul>
+                    <li>titleAr: "خدمة الطوارئ"</li>
+                    <li>titleEn: "Emergency Service"</li>
+                    <li>phoneNumber: "+963123456789"</li>
+                    <li>images: [image file]</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <span class="url">/emergency-services/{id}</span>
+            <h3>Get Emergency Service by ID</h3>
+            <p>Retrieve a specific emergency service by its ID.</p>
+            
+            <h4>Parameters</h4>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>id</td>
+                    <td>integer</td>
+                    <td class="required">Yes</td>
+                    <td>ID of the emergency service</td>
+                </tr>
+            </table>
+            
+            <h4>Response</h4>
+            <p>Returns the requested emergency service object.</p>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method put">PUT</span>
+            <span class="url">/emergency-services/{id}</span>
+            <h3>Update Emergency Service</h3>
+            <p>Update an existing emergency service.</p>
+            
+            <h4>Parameters</h4>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>id</td>
+                    <td>integer</td>
+                    <td class="required">Yes</td>
+                    <td>ID of the emergency service to update</td>
+                </tr>
+            </table>
+            
+            <h4>Request Body (multipart/form-data)</h4>
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>titleAr</td>
+                    <td>string</td>
+                    <td>No</td>
+                    <td>Arabic title of the emergency service</td>
+                </tr>
+                <tr>
+                    <td>titleEn</td>
+                    <td>string</td>
+                    <td>No</td>
+                    <td>English title of the emergency service</td>
+                </tr>
+                <tr>
+                    <td>phoneNumber</td>
+                    <td>string</td>
+                    <td>No</td>
+                    <td>Phone number for the emergency service</td>
+                </tr>
+                <tr>
+                    <td>images</td>
+                    <td>file</td>
+                    <td>No</td>
+                    <td>Image file for the emergency service (JPEG, PNG, etc.)</td>
+                </tr>
+            </table>
+            
+            <h4>Response</h4>
+            <p>Returns the updated emergency service object.</p>
+        </div>
+        
+        <div class="endpoint">
+            <span class="method delete">DELETE</span>
+            <span class="url">/emergency-services/{id}</span>
+            <h3>Delete Emergency Service</h3>
+            <p>Delete an emergency service by its ID.</p>
+            
+            <h4>Parameters</h4>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>id</td>
+                    <td>integer</td>
+                    <td class="required">Yes</td>
+                    <td>ID of the emergency service to delete</td>
+                </tr>
+            </table>
+            
+            <h4>Response</h4>
+            <p>Returns a success message upon deletion.</p>
+        </div>
+        
+        <h2>Emergency Service Object</h2>
+        <p>Example of an emergency service object returned by the API:</p>
+        <div class="example">
+            <pre>{
+  "id": 1,
+  "titleAr": "خدمة الطوارئ",
+  "titleEn": "Emergency Service",
+  "phoneNumber": "+963123456789",
+  "image": "emergency-service-image.jpg",
+  "createdAt": "2023-01-01T00:00:00.000Z",
+  "updatedAt": "2023-01-01T00:00:00.000Z"
+}</pre>
+        </div>
+        
+        <h2>Error Responses</h2>
+        <p>All error responses follow this format:</p>
+        <div class="example">
+            <pre>{
+  "status": "error",
+  "message": "Error description",
+  "error": "Detailed error message"
+}</pre>
+        </div>
+    </div>
+</body>
+</html>

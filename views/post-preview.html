@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Basic Meta Tags -->
+  <title>{{title}} - Syria Through People's Eyes</title>
+  <meta name="description" content="{{description}}">
+  <meta name="author" content="{{author}}">
+  
+  <!-- Open Graph Meta Tags for Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{title}}">
+  <meta property="og:description" content="{{description}}">
+  <meta property="og:url" content="{{canonicalUrl}}">
+  <meta property="og:site_name" content="Syria Through People's Eyes">
+  <meta property="og:locale" content="en_US">
+  {{#if imageUrl}}
+  <meta property="og:image" content="{{imageUrl}}">
+  <meta property="og:image:secure_url" content="{{imageUrl}}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/jpeg">
+  {{/if}}
+  {{#if videoUrl}}
+  <meta property="og:video" content="{{videoUrl}}">
+  <meta property="og:video:type" content="video/mp4">
+  {{/if}}
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="{{#if imageUrl}}summary_large_image{{else}}summary{{/if}}">
+  <meta name="twitter:title" content="{{title}}">
+  <meta name="twitter:description" content="{{description}}">
+  {{#if imageUrl}}<meta name="twitter:image" content="{{imageUrl}}">{{/if}}
+  
+  <!-- Additional Meta Tags -->
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{canonicalUrl}}">
+  
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+      direction: ltr;
+      text-align: left;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5;
+      color: #1c1e21;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    
+    .facebook-container {
+      max-width: 500px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .facebook-container:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transform: translateY(-1px);
+    }
+    
+    .post-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e4e6ea;
+      display: flex;
+      align-items: center;
+    }
+    
+ 
+    
+    .post-info {
+      flex-grow: 1;
+    }
+    
+    .app-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: #1c1e21;
+      margin: 0;
+      line-height: 20px;
+    }
+    
+    .post-time {
+      font-size: 13px;
+      color: #65676b;
+      margin: 0;
+      line-height: 16px;
+    }
+    
+    .post-content {
+      padding: 16px;
+    }
+    .post-title {
+      font-size: 16px;
+      font-weight: normal;
+      color: #1c1e21;
+      margin-bottom: 12px;
+      line-height: 20px;
+    }
+    
+    .post-author {
+      font-size: 14px;
+      color: #65676b;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .author-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #3674B5;
+      margin-left: 6px;
+    }
+    
+    .post-text {
+      font-size: 16px;
+      line-height: 20px;
+      color: #1c1e21;
+      margin-bottom: 16px;
+      white-space: pre-line;
+    }
+    .post-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 16px 0;
+      border: 1px solid #e4e6ea;
+      display: block;
+    }
+    .app-section {
+      border: 1px solid #e4e6ea;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 16px;
+      background: white;
+    }
+    
+    .app-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1c1e21;
+      margin: 0 0 12px 0;
+    }
+    
+    .app-link {
+      display: inline-block;
+      background-color: #1877f2;
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .app-link:hover {
+      background-color: #166fe5;
+    }
+    .countdown {
+      font-size: 14px;
+      margin-top: 12px;
+      color: #65676b;
+      text-align: center;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background-color: #e4e6ea;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: #1877f2;
+      width: 0%;
+      transition: width 0.1s ease;
+      border-radius: 2px;
+    }
+    
+    .action-buttons {
+      padding: 8px 16px;
+      border-top: 1px solid #e4e6ea;
+      display: flex;
+      justify-content: space-around;
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: #65676b;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .action-btn:hover {
+      background: #f2f3f4;
+    }
+    
+    .action-btn .icon {
+      margin-right: 6px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="facebook-container" onclick="handlePostClick(event)">
+    <!-- Facebook Post Header -->
+    <div class="post-header">
+       <div class="post-info">
+        <div class="app-name">{{author}}</div>
+        <div class="post-time">Now · 🌍</div>
+      </div>
+    </div>
+    
+    <!-- Post Content -->
+    <div class="post-content">
+      <div class="post-title">{{title}}</div>
+       
+      
+      <div class="post-text">{{content}}</div>
+      
+      {{#if imageUrl}}
+      <img src="{{imageUrl}}" alt="{{title}}" class="post-image">
+      {{/if}}
+      
+      <div class="app-section">
+        <h3>🚀 Open in App</h3>
+        <button onclick="openApp()" class="app-link">Open App Now</button>
+        <div id="countdown" class="countdown">Welcome!</div>
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+     
+ 
+  </div>
+  <script>
+    // App configuration
+    var appScheme = 'syriathroughpeople://post/{{postId}}';
+    var playStoreUrl = 'https://play.google.com/store/apps/details?id=com.syriathroughpeople.app';
+    var appStoreUrl = 'https://apps.apple.com/app/syria-through-peoples-eyes/id123456789';
+    
+    // Countdown variables
+    var countdownSeconds = 3;
+    var progressBar = null;
+    var countdownElement = null;
+    
+    // Detect platform and Facebook
+    var isAndroid = /Android/i.test(navigator.userAgent);
+    var isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    var isMobile = isAndroid || isIOS;
+    var isFromFacebook = window.location.href.indexOf('fbclid') !== -1 || 
+                        navigator.userAgent.toLowerCase().indexOf('facebookexternalhit') !== -1 ||
+                        document.referrer.indexOf('facebook.com') !== -1;
+    
+    function updateCountdown() {
+      if (countdownElement) {
+        if (isFromFacebook && countdownSeconds === 3) {
+          countdownElement.textContent = 'Welcome! The app will open in ' + countdownSeconds + ' seconds...';
+        } else {
+          countdownElement.textContent = 'The app will open in ' + countdownSeconds + ' seconds...';
+        }
+      }
+      if (progressBar) {
+        var progress = ((3 - countdownSeconds) / 3) * 100;
+        progressBar.style.width = progress + '%';
+      }
+      
+      if (countdownSeconds <= 0) {
+        tryOpenApp();
+        return;
+      }
+      
+      countdownSeconds--;
+      setTimeout(updateCountdown, 1000);
+    }
+    
+    function tryOpenApp() {
+      if (isAndroid) {
+        var intentUrl = 'intent://post/{{postId}}#Intent;scheme=syriathroughpeople;package=com.syriathroughpeople.app;S.browser_fallback_url=' + encodeURIComponent(playStoreUrl) + ';end';
+        window.location.href = intentUrl;
+      } else if (isIOS) {
+        window.location.href = appScheme;
+        setTimeout(function() {
+          if (!document.hidden) {
+            window.location.href = appStoreUrl;
+          }
+        }, 2000);
+      } else {
+        alert('Please download the app on your mobile phone');
+      }
+    }
+    
+    function openApp() {
+      tryOpenApp();
+    }
+    
+    function redirectToStore() {
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      
+      if (isAndroid) {
+        // Redirect to Google Play Store
+        window.open('https://play.google.com/store/apps/details?id=com.syriathroughpeople.app', '_blank');
+      } else if (isIOS) {
+        // Redirect to App Store
+        window.open('https://apps.apple.com/app/syria-through-peoples-eyes/id123456789', '_blank');
+      } else {
+        // For desktop, default to Google Play
+        window.open('https://play.google.com/store/apps/details?id=com.syriathroughpeople.app', '_blank');
+      }
+    }
+    
+ 
+   
+    
+    // Initialize when page loads
+    window.onload = function() {
+      countdownElement = document.getElementById('countdown');
+      progressBar = document.getElementById('progress-fill');
+      
+      // Update avatar with first letter of author name
+      const authorName = '{{author}}';
+      const avatarElement = document.getElementById('authorAvatar');
+      if (authorName && authorName.trim() && avatarElement) {
+        // Get only the first character and make it uppercase
+        const firstLetter = authorName.trim().substring(0, 1).toUpperCase();
+        avatarElement.textContent = firstLetter;
+      }
+      
+      if (isMobile) {
+        // Always show countdown for mobile, even from Facebook
+        updateCountdown();
+      } else {
+        if (countdownElement) {
+          countdownElement.textContent = 'Please visit this page from your mobile phone';
+        }
+      }
+    };
+  </script>
+</body>
+</html>
+

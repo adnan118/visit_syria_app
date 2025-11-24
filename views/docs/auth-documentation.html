@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>توثيق نظام المصادقة - تطبيق زيارة سوريا</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+      direction: rtl;
+      text-align: right;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.7;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #1877f2, #0d5bb0);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    
+    h2 {
+      color: #1877f2;
+      border-bottom: 2px solid #e4e6eb;
+      padding-bottom: 10px;
+      margin-top: 30px;
+    }
+    
+    h3 {
+      color: #0d5bb0;
+      margin-top: 25px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .endpoint {
+      background: #f0f2f5;
+      border-left: 4px solid #1877f2;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .method {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-left: 10px;
+    }
+    
+    .post {
+      background: #42b72a;
+      color: white;
+    }
+    
+    .get {
+      background: #1877f2;
+      color: white;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: right;
+      border-bottom: 1px solid #e4e6eb;
+    }
+    
+    th {
+      background: #f0f2f5;
+      font-weight: 600;
+      color: #1c1e21;
+    }
+    
+    tr:hover {
+      background: #f9f9f9;
+    }
+    
+    code {
+      background: #f0f2f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.95rem;
+    }
+    
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      margin: 20px 0;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: #1877f2;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: #0d5bb0;
+    }
+    
+    .mermaid {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+    
+    .toc {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .toc ul {
+      list-style: none;
+      padding-right: 0;
+    }
+    
+    .toc li {
+      margin: 10px 0;
+      padding: 8px 15px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .toc li:hover {
+      background: #f0f2f5;
+    }
+    
+    .toc a {
+      text-decoration: none;
+      color: #1c1e21;
+      font-weight: 500;
+    }
+    
+    .toc a:hover {
+      color: #1877f2;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      margin-top: 40px;
+      color: #65676b;
+      border-top: 1px solid #e4e6eb;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>توثيق نظام المصادقة</h1>
+      <p>تطبيق زيارة سوريا - نظام مصادقة شامل يدعم طرق متعددة</p>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="toc">
+      <h2>جدول المحتويات</h2>
+      <ul>
+        <li><a href="#overview">نظرة عامة</a></li>
+        <li><a href="#auth-methods">طرق المصادقة</a></li>
+        <li><a href="#endpoints">نقاط النهاية</a></li>
+        <li><a href="#register">التسجيل</a></li>
+        <li><a href="#login">تسجيل الدخول</a></li>
+        <li><a href="#social-login">تسجيل الدخول الاجتماعي</a></li>
+        <li><a href="#firebase-login">تسجيل الدخول عبر Firebase</a></li>
+        <li><a href="#verify-token">التحقق من الرمز</a></li>
+        <li><a href="#password-reset">إعادة تعيين كلمة المرور</a></li>
+        <li><a href="#middleware">الوسيط المصادقة</a></li>
+        <li><a href="#token-management">إدارة الرموز</a></li>
+        <li><a href="#security">اعتبارات الأمان</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2 id="overview">نظرة عامة</h2>
+      <p>يوفر تطبيق زيارة سوريا نظام مصادقة شامل يدعم طرق تسجيل دخول متعددة:</p>
+      <ol>
+        <li><strong>المصادقة المحلية</strong> - التسجيل والدخول التقليدي عبر البريد الإلكتروني وكلمة المرور</li>
+        <li><strong>المصادقة الاجتماعية</strong> - تسجيل الدخول عبر Google أو Facebook OAuth</li>
+        <li><strong>مصادقة Firebase</strong> - مصادقة مبنية على Firebase لـ Google/Facebook</li>
+      </ol>
+    </div>
+    
+    <div class="card">
+      <h2 id="auth-methods">طرق المصادقة</h2>
+      <h3>1. المصادقة المحلية</h3>
+      <p>التسجيل والدخول باستخدام البريد الإلكتروني وكلمة المرور.</p>
+      
+      <h3>2. المصادقة الاجتماعية</h3>
+      <p>تسجيل الدخول باستخدام رموز OAuth من Google أو Facebook.</p>
+      
+      <h3>3. مصادقة Firebase</h3>
+      <p>مصادقة مبنية على Firebase مع دعم Google و Facebook.</p>
+    </div>
+    
+    <div class="card">
+      <h2 id="endpoints">نقاط نهاية API</h2>
+      
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <strong>/api/v1/register</strong> - تسجيل مستخدم جديد
+      </div>
+      
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <strong>/api/v1/login</strong> - تسجيل دخول المستخدم
+      </div>
+      
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <strong>/api/v1/login-social</strong> - تسجيل دخول اجتماعي
+      </div>
+      
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <strong>/api/v1/firebase-login</strong> - تسجيل دخول عبر Firebase
+      </div>
+      
+      <div class="endpoint">
+        <span class="method get">GET</span>
+        <strong>/api/v1/verify-token</strong> - التحقق من صحة الرمز
+      </div>
+      
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <strong>/api/v1/forgot-password</strong> - طلب إعادة تعيين كلمة المرور
+      </div>
+      
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <strong>/api/v1/verify-otp</strong> - التحقق من رمز OTP
+      </div>
+      
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <strong>/api/v1/reset-password</strong> - إعادة تعيين كلمة المرور
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2 id="register">التسجيل</h2>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/register</code></p>
+      <p>تسجيل مستخدم جديد باستخدام البريد الإلكتروني وكلمة المرور.</p>
+      
+      <h3>معلمات الطلب</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>firstName</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>الاسم الأول للمستخدم</td>
+        </tr>
+        <tr>
+          <td>lastName</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>اسم العائلة للمستخدم</td>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>عنوان بريد إلكتروني صالح</td>
+        </tr>
+        <tr>
+          <td>mobile</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>رقم الجوال (9-15 رقماً)</td>
+        </tr>
+        <tr>
+          <td>password</td>
+          <td>نص</td>
+          <td>نعم (للمزود المحلي)</td>
+          <td>كلمة مرور قوية (8+ أحرف، أحرف كبيرة وصغيرة، أرقام، رموز)</td>
+        </tr>
+        <tr>
+          <td>provider</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>مزود المصادقة (الافتراضي: "local")</td>
+        </tr>
+        <tr>
+          <td>bio</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>نبذة عن المستخدم</td>
+        </tr>
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "email": "mohammad@example.com",
+    "mobile": "0912345678",
+    "password": "SecurePass123!",
+    "provider": "local"
+  }'</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "message": "تم إنشاء المستخدم بنجاح.",
+  "data": {
+    "id": 1,
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "email": "mohammad@example.com",
+    "mobile": "0912345678",
+    "username": "محمد أحمد",
+    "provider": "local",
+    "image": "default-user.png",
+    "emailVerified": false,
+    "isAdmin": false,
+    "isActive": true,
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="login">تسجيل الدخول</h2>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/login</code></p>
+      <p>تسجيل الدخول باستخدام البريد الإلكتروني أو الجوال وكلمة المرور.</p>
+      
+      <h3>معلمات الطلب</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>نص</td>
+          <td>لا* (مطلوب إذا لم يُقدم الجوال)</td>
+          <td>عنوان بريد إلكتروني صالح</td>
+        </tr>
+        <tr>
+          <td>mobile</td>
+          <td>نص</td>
+          <td>لا* (مطلوب إذا لم يُقدم البريد)</td>
+          <td>رقم الجوال</td>
+        </tr>
+        <tr>
+          <td>password</td>
+          <td>نص</td>
+          <td>نعم (للمزود المحلي)</td>
+          <td>كلمة مرور المستخدم</td>
+        </tr>
+        <tr>
+          <td>provider</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>مزود المصادقة (الافتراضي: "local")</td>
+        </tr>
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "mohammad@example.com",
+    "password": "SecurePass123!",
+    "provider": "local"
+  }'</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "message": "تم تسجيل الدخول بنجاح",
+  "data": {
+    "id": 1,
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "email": "mohammad@example.com",
+    "mobile": "0912345678",
+    "username": "محمد أحمد",
+    "provider": "local",
+    "image": "default-user.png",
+    "emailVerified": false,
+    "isAdmin": false,
+    "isActive": true,
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="social-login">تسجيل الدخول الاجتماعي</h2>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/login-social</code></p>
+      <p>تسجيل الدخول باستخدام رموز OAuth من Google أو Facebook.</p>
+      
+      <h3>معلمات الطلب</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>provider</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>مزود المصادقة ("google" أو "facebook")</td>
+        </tr>
+        <tr>
+          <td>token</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>رمز OAuth أو رمز ID</td>
+        </tr>
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/login-social" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider": "google",
+    "token": "ya29.a0AfH6SMC..."
+  }'</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "message": "تم تسجيل الدخول الاجتماعي بنجاح",
+  "data": {
+    "id": 1,
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "email": "mohammad@gmail.com",
+    "username": "محمد أحمد",
+    "provider": "google",
+    "image": "user_1234567890.jpg",
+    "emailVerified": true,
+    "isAdmin": false,
+    "isActive": true,
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="firebase-login">تسجيل الدخول عبر Firebase</h2>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/firebase-login</code></p>
+      <p>تسجيل الدخول باستخدام رموز ID من Firebase.</p>
+      
+      <h3>معلمات الطلب</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>idToken</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>رمز ID من Firebase</td>
+        </tr>
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/firebase-login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ij..."
+  }'</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "message": "تم تسجيل الدخول عبر Firebase بنجاح",
+  "data": {
+    "id": 1,
+    "firstName": "محمد",
+    "lastName": "أحمد",
+    "email": "mohammad@gmail.com",
+    "username": "محمد أحمد",
+    "provider": "google",
+    "image": "firebase_user_1234567890.jpg",
+    "emailVerified": true,
+    "isAdmin": false,
+    "isActive": true,
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="verify-token">التحقق من الرمز</h2>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/verify-token</code></p>
+      <p>التحقق من صحة رمز الوصول.</p>
+      
+      <h3>العناوين</h3>
+      <table>
+        <tr>
+          <th>العنوان</th>
+          <th>القيمة</th>
+        </tr>
+        <tr>
+          <td>Authorization</td>
+          <td>Bearer <code>&lt;access_token&gt;</code></td>
+        </tr>
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/verify-token" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>true</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="password-reset">إعادة تعيين كلمة المرور</h2>
+      <p>تدفق إعادة تعيين كلمة المرور يتضمن 3 خطوات:</p>
+      
+      <h3>1. طلب إعادة تعيين كلمة المرور</h3>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/forgot-password</code></p>
+      
+      <h4>معلمات الطلب</h4>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>نص</td>
+          <td>لا* (مطلوب إذا لم يُقدم الجوال)</td>
+          <td>عنوان بريد إلكتروني صالح</td>
+        </tr>
+        <tr>
+          <td>mobile</td>
+          <td>نص</td>
+          <td>لا* (مطلوب إذا لم يُقدم البريد)</td>
+          <td>رقم الجوال</td>
+        </tr>
+      </table>
+      
+      <h3>2. التحقق من رمز OTP</h3>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/verify-otp</code></p>
+      
+      <h4>معلمات الطلب</h4>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>نص</td>
+          <td>لا* (مطلوب إذا لم يُقدم الجوال)</td>
+          <td>عنوان بريد إلكتروني صالح</td>
+        </tr>
+        <tr>
+          <td>mobile</td>
+          <td>نص</td>
+          <td>لا* (مطلوب إذا لم يُقدم البريد)</td>
+          <td>رقم الجوال</td>
+        </tr>
+        <tr>
+          <td>otp</td>
+          <td>رقم</td>
+          <td>نعم</td>
+          <td>رمز OTP مكون من 6 أرقام تم استلامه عبر البريد/SMS</td>
+        </tr>
+      </table>
+      
+      <h3>3. إعادة تعيين كلمة المرور</h3>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/reset-password</code></p>
+      
+      <h4>معلمات الطلب</h4>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>نص</td>
+          <td>لا* (مطلوب إذا لم يُقدم الجوال)</td>
+          <td>عنوان بريد إلكتروني صالح</td>
+        </tr>
+        <tr>
+          <td>mobile</td>
+          <td>نص</td>
+          <td>لا* (مطلوب إذا لم يُقدم البريد)</td>
+          <td>رقم الجوال</td>
+        </tr>
+        <tr>
+          <td>newPassword</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>كلمة مرور جديدة قوية</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="card">
+      <h2 id="middleware">الوسيط المصادقة</h2>
+      <p>يستخدم التطبيق وسيط مصادقة مبني على JWT لحماية المسارات. يتم تنفيذ الوسيط في <a href="../../middlewares/jwt.js">middlewares/jwt.js</a>.</p>
+      
+      <h3>كيف يعمل</h3>
+      <ol>
+        <li>يتم التحقق من جميع الطلبات (عدا المسارات العامة الصريحة) من وجود رمز JWT صالح</li>
+        <li>يتم التحقق من الرموز باستخدام <code>ACCESS_TOKEN_SECRET</code> من الإعدادات</li>
+        <li>يتم التحقق من الرموز مقابل قاعدة البيانات لضمان عدم إلغائها</li>
+        <li>تتطلب مسارات الإدارة أن يكون لدى المستخدم <code>isAdmin: true</code> في حمولة الرمز</li>
+      </ol>
+      
+      <h3>المسارات العامة</h3>
+      <p>المسارات التالية يمكن الوصول إليها علناً دون مصادقة:</p>
+      <ul>
+        <li><code>/api/v1/login</code></li>
+        <li><code>/api/v1/login-social</code></li>
+        <li><code>/api/v1/firebase-login</code></li>
+        <li><code>/api/v1/register</code></li>
+        <li><code>/api/v1/forgot-password</code></li>
+        <li><code>/api/v1/verify-token</code></li>
+        <li><code>/api/v1/verify-otp</code></li>
+        <li><code>/api/v1/reset-password</code></li>
+        <li>الملفات الثابتة في <code>/public/</code> و <code>/uploads/</code></li>
+        <li>المنشورات العامة وملفات المستخدمين</li>
+      </ul>
+      
+      <h3>المسارات المحمية</h3>
+      <p>تتطلب جميع المسارات الأخرى رمز وصول صالح في عنوان Authorization:</p>
+      <pre>Authorization: Bearer &lt;access_token&gt;</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="token-management">إدارة الرموز</h2>
+      
+      <h3>أنواع الرموز</h3>
+      <ol>
+        <li><strong>رمز الوصول</strong> - رمز قصير العمر (24 ساعة) للوصول إلى API</li>
+        <li><strong>رمز التحديث</strong> - رمز طويل العمر (60 يوماً) لتوليد رموز وصول جديدة</li>
+      </ol>
+      
+      <h3>حمولة الرمز</h3>
+      <p>تحتوي الرموز على معلومات المستخدم التالية:</p>
+      <pre>{
+  "id": 1,
+  "userId": 1,
+  "firstName": "محمد",
+  "email": "mohammad@example.com",
+  "mobile": "0912345678",
+  "isAdmin": false,
+  "isActive": true,
+  "iat": 1623456789,
+  "exp": 1623543189
+}</pre>
+      
+      <h3>تخزين الرموز</h3>
+      <p>يتم تخزين الرموز في قاعدة البيانات باستخدام <a href="../../models/tokenModel.js">نموذج الرمز</a> للسماح بالإلغاء. يمكن لكل مستخدم أن يمتلك رمزًا نشطًا واحدًا فقط في كل مرة.</p>
+    </div>
+    
+    <div class="card">
+      <h2 id="security">اعتبارات الأمان</h2>
+      
+      <h3>أمان كلمة المرور</h3>
+      <ul>
+        <li>يتم تجزئة كلمات المرور باستخدام bcrypt مع عامل تكلفة 8</li>
+        <li>متطلبات قوة كلمة المرور:
+          <ul>
+            <li>الحد الأدنى 8 أحرف</li>
+            <li>حرف واحد كبير على الأقل</li>
+            <li>حرف واحد صغير على الأقل</li>
+            <li>رقم واحد على الأقل</li>
+            <li>رمز واحد على الأقل</li>
+          </ul>
+        </li>
+      </ul>
+      
+      <h3>أمان الرمز</h3>
+      <ul>
+        <li>تنتهي صلاحية رموز الوصول بعد 24 ساعة</li>
+        <li>تنتهي صلاحية رموز التحديث بعد 60 يوماً</li>
+        <li>يتم تخزين الرموز بشكل مجزأ في قاعدة البيانات</li>
+        <li>يمكن إلغاء الرموز بحذفها من قاعدة البيانات</li>
+      </ul>
+      
+      <h3>أمان OAuth</h3>
+      <ul>
+        <li>يتم التحقق من رموز OAuth مع مزودي الخدمة المعنيين</li>
+        <li>يتم استرداد بيانات المستخدم مباشرة من واجهات برمجة التطبيقات الخاصة بالمزود</li>
+        <li>يتم تنزيل صور الملف الشخصي وتخزينها محلياً</li>
+        <li>وضع التجاوز المتاح للاختبار في بيئة التطوير</li>
+      </ul>
+      
+      <h3>أمان Firebase</h3>
+      <ul>
+        <li>يتم التحقق من رموز ID الخاصة بـ Firebase باستخدام Firebase Admin SDK</li>
+        <li>يتم مزامنة بيانات المستخدم مع قاعدة البيانات المحلية</li>
+        <li>يتم تنزيل صور الملف الشخصي وتخزينها محلياً</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2>معالجة الأخطاء</h2>
+      <p>أخطاء المصادقة الشائعة ورموز حالة HTTP الخاصة بها:</p>
+      
+      <table>
+        <tr>
+          <th>الخطأ</th>
+          <th>رمز الحالة</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>بيانات الاعتماد غير صحيحة</td>
+          <td>400</td>
+          <td>بريد إلكتروني/كلمة مرور غير صحيحة</td>
+        </tr>
+        <tr>
+          <td>المستخدم غير موجود</td>
+          <td>404</td>
+          <td>لا يوجد مستخدم بالبريد/الجوال المقدم</td>
+        </tr>
+        <tr>
+          <td>رمز غير صحيح</td>
+          <td>401</td>
+          <td>رمز JWT تالف أو منتهي الصلاحية</td>
+        </tr>
+        <tr>
+          <td>الرمز ملغي</td>
+          <td>401</td>
+          <td>الرمز غير موجود في قاعدة البيانات</td>
+        </tr>
+        <tr>
+          <td>أذونات غير كافية</td>
+          <td>403</td>
+          <td>المستخدم غير مصرح له بالإجراء المطلوب</td>
+        </tr>
+        <tr>
+          <td>أخطاء التحقق</td>
+          <td>400</td>
+          <td>معلمات الطلب مفقودة أو غير صحيحة</td>
+        </tr>
+        <tr>
+          <td>أخطاء الشبكة</td>
+          <td>503</td>
+          <td>مشاكل في الاتصال بمزودي OAuth</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+      <p>توثيق نظام المصادقة - تطبيق زيارة سوريا © 2025</p>
+    </div>
+  </footer>
+</body>
+</html>

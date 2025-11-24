@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>توثيق إدارة الوسوم - تطبيق زيارة سوريا</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+      direction: rtl;
+      text-align: right;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.7;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #8e44ad, #6c3483);
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    
+    h2 {
+      color: #8e44ad;
+      border-bottom: 2px solid #e4e6eb;
+      padding-bottom: 10px;
+      margin-top: 30px;
+    }
+    
+    h3 {
+      color: #6c3483;
+      margin-top: 25px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+    }
+    
+    .endpoint {
+      background: #f0f2f5;
+      border-left: 4px solid #8e44ad;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .method {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-left: 10px;
+    }
+    
+    .post {
+      background: #42b72a;
+      color: white;
+    }
+    
+    .get {
+      background: #1877f2;
+      color: white;
+    }
+    
+    .put {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .delete {
+      background: #ef4444;
+      color: white;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: right;
+      border-bottom: 1px solid #e4e6eb;
+    }
+    
+    th {
+      background: #f0f2f5;
+      font-weight: 600;
+      color: #1c1e21;
+    }
+    
+    tr:hover {
+      background: #f9f9f9;
+    }
+    
+    code {
+      background: #f0f2f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.95rem;
+    }
+    
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      margin: 20px 0;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: #8e44ad;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: #6c3483;
+    }
+    
+    .mermaid {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+    
+    .toc {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .toc ul {
+      list-style: none;
+      padding-right: 0;
+    }
+    
+    .toc li {
+      margin: 10px 0;
+      padding: 8px 15px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .toc li:hover {
+      background: #f0f2f5;
+    }
+    
+    .toc a {
+      text-decoration: none;
+      color: #1c1e21;
+      font-weight: 500;
+    }
+    
+    .toc a:hover {
+      color: #8e44ad;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      margin-top: 40px;
+      border-top: 1px solid #e4e6eb;
+      color: #606770;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>توثيق إدارة الوسوم</h1>
+      <p>دليل شامل لجميع عمليات إدارة الوسوم في تطبيق زيارة سوريا</p>
+    </header>
+    
+    <div class="toc">
+      <h2>جدول المحتويات</h2>
+      <ul>
+        <li><a href="#overview">نظرة عامة</a></li>
+        <li><a href="#tag-structure">هيكل الوسم</a></li>
+        <li><a href="#create-tag">إنشاء وسم</a></li>
+        <li><a href="#list-tags">عرض الوسوم</a></li>
+        <li><a href="#get-tag">عرض وسم محدد</a></li>
+        <li><a href="#update-tag">تحديث وسم</a></li>
+        <li><a href="#delete-tag">حذف وسم</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2 id="overview">نظرة عامة</h2>
+      <p>تتيح واجهة برمجة التطبيقات (API) الخاصة بالوسوم للمسؤولين إنشاء وتنظيم الوسوم التي يمكن استخدامها لتصنيف المنشورات والستوريز. تشمل الميزات:</p>
+      <ul>
+        <li>إنشاء وتعديل الوسوم</li>
+        <li>عرض قائمة بالوسوم</li>
+        <li>الوصول إلى وسم محدد باستخدام المعرف أو الاسم المختصر</li>
+        <li>حذف الوسوم مع تنظيف المرجعيات تلقائياً</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h2 id="tag-structure">هيكل الوسم</h2>
+      <p>كل وسم يحتوي على الحقول التالية:</p>
+      
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>رقم</td>
+          <td>المعرف الفريد للوسم</td>
+        </tr>
+        <tr>
+          <td>nameAr</td>
+          <td>نص</td>
+          <td>اسم الوسم بالعربية</td>
+        </tr>
+        <tr>
+          <td>nameEn</td>
+          <td>نص</td>
+          <td>اسم الوسم بالإنجليزية</td>
+        </tr>
+        <tr>
+          <td>slug</td>
+          <td>نص</td>
+          <td>الاسم المختصر للوسم (يُستخدم في الروابط)</td>
+        </tr>
+        <tr>
+          <td>createdAt</td>
+          <td>تاريخ</td>
+          <td>تاريخ الإنشاء</td>
+        </tr>
+        <tr>
+          <td>updatedAt</td>
+          <td>تاريخ</td>
+          <td>تاريخ آخر تحديث</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="card">
+      <h2 id="create-tag">إنشاء وسم</h2>
+      <p><strong>نقطة النهاية:</strong> <code>POST /api/v1/tags</code></p>
+      <p>إنشاء وسم جديد (للمديرين فقط).</p>
+      
+      <h3>معلمات الطلب</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>nameAr</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>اسم الوسم بالعربية</td>
+        </tr>
+        <tr>
+          <td>nameEn</td>
+          <td>نص</td>
+          <td>نعم</td>
+          <td>اسم الوسم بالإنجليزية</td>
+        </tr>
+         
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X POST "https://visitsyria.fun/api/v1/tags" \
+  -H "Authorization: Bearer &lt;admin_access_token&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nameAr": "سياحة",
+    "nameEn": "Tourism",
+    "description": "المنشورات المتعلقة بالسياحة في سوريا"
+  }'</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "data": {
+    "id": 123,
+    "nameAr": "سياحة",
+    "nameEn": "Tourism",
+    "slug": "tourism",
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-15T10:30:00.000Z"
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="list-tags">عرض الوسوم</h2>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/tags</code></p>
+      <p>عرض قائمة بالوسوم.</p>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/tags" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "data": [
+    {
+      "id": 123,
+      "name": "سياحة",
+      "slug": "tourism",
+      "description": "المنشورات المتعلقة بالسياحة في سوريا",
+      "color": "#3498db",
+      "icon": "plane",
+      "createdAt": "2025-01-15T10:30:00.000Z",
+      "updatedAt": "2025-01-15T10:30:00.000Z"
+    }
+  ]
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="get-tag">عرض وسم محدد</h2>
+      <p><strong>نقطة النهاية:</strong> <code>GET /api/v1/tags/:id</code></p>
+      <p>عرض وسم محدد باستخدام المعرف أو الاسم المختصر.</p>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X GET "https://visitsyria.fun/api/v1/tags/123" \
+  -H "Authorization: Bearer &lt;access_token&gt;"</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "data": {
+    "id": 123,
+    "name": "سياحة",
+    "slug": "tourism",
+    "description": "المنشورات المتعلقة بالسياحة في سوريا",
+    "color": "#3498db",
+    "icon": "plane",
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-15T10:30:00.000Z"
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="update-tag">تحديث وسم</h2>
+      <p><strong>نقطة النهاية:</strong> <code>PUT /api/v1/tags/:id</code></p>
+      <p>تحديث وسم محدد (للمديرين فقط).</p>
+      
+      <h3>معلمات الطلب</h3>
+      <table>
+        <tr>
+          <th>الحقل</th>
+          <th>النوع</th>
+          <th>مطلوب</th>
+          <th>الوصف</th>
+        </tr>
+        <tr>
+          <td>nameAr</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>اسم الوسم بالعربية</td>
+        </tr>
+        <tr>
+          <td>nameEn</td>
+          <td>نص</td>
+          <td>لا</td>
+          <td>اسم الوسم بالإنجليزية</td>
+        </tr>
+         
+      </table>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X PUT "https://visitsyria.fun/api/v1/tags/123" \
+  -H "Authorization: Bearer &lt;admin_access_token&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nameAr": "سياحة سوريا",
+    "nameEn": "Tourism Syria"
+  }'</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "data": {
+    "id": 123,
+    "nameAr": "سياحة سوريا",
+    "nameEn": "Tourism Syria",
+    "slug": "tourism-syria",
+    "createdAt": "2025-01-15T10:30:00.000Z",
+    "updatedAt": "2025-01-15T11:00:00.000Z"
+  }
+}</pre>
+    </div>
+    
+    <div class="card">
+      <h2 id="delete-tag">حذف وسم</h2>
+      <p><strong>نقطة النهاية:</strong> <code>DELETE /api/v1/tags/:id</code></p>
+      <p>حذف وسم محدد (للمديرين فقط). يتم تنظيف المرجعيات تلقائياً من جميع المنشورات والستوريز.</p>
+      
+      <h3>مثال على الطلب</h3>
+      <pre>curl -X DELETE "https://visitsyria.fun/api/v1/tags/123" \
+  -H "Authorization: Bearer &lt;admin_access_token&gt;"</pre>
+      
+      <h3>مثال على الاستجابة</h3>
+      <pre>{
+  "status": "success",
+  "message": "Tag deleted successfully"
+}</pre>
+    </div>
+    
+    <footer>
+      <p>© 2025 تطبيق زيارة سوريا. جميع الحقوق محفوظة.</p>
+    </footer>
+  </div>
+</body>
+</html>

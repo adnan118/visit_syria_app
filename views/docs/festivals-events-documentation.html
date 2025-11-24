@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>توثيق واجهة برمجة تطبيقات الفعاليات والمهرجانات</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            text-align: right;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.7;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            color: #ff6b6b;
+            border-bottom: 2px solid #e4e6eb;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: #ee5a24;
+            margin-top: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .endpoint {
+            background: #f0f2f5;
+            border-left: 4px solid #ff6b6b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+        
+        .get {
+            background: #1877f2;
+            color: white;
+        }
+        
+        .post {
+            background: #42b72a;
+            color: white;
+        }
+        
+        .put {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .delete {
+            background: #ef4444;
+            color: white;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 1px solid #e4e6eb;
+        }
+        
+        th {
+            background: #f0f2f5;
+            font-weight: 600;
+            color: #1c1e21;
+        }
+        
+        tr:hover {
+            background: #f9f9f9;
+        }
+        
+        code {
+            background: #f0f2f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .example {
+            background-color: #e8f4f8;
+            border-left: 4px solid #ff6b6b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>توثيق واجهة برمجة تطبيقات الفعاليات والمهرجانات</h1>
+            <p>دليل شامل لاستخدام واجهة برمجة التطبيقات للفعاليات والمهرجانات</p>
+        </header>
+        
+        <div class="card">
+            <h2>نظرة عامة</h2>
+            <p>توفر واجهة برمجة التطبيقات هذه وظائف كاملة لإدارة الفعاليات والمهرجانات، بما في ذلك إنشاء الفعاليات، الحصول على قائمة الفعاليات، تحديث تفاصيل الفعالية، وحذف الفعاليات.</p>
+            <div class="example">
+                <strong>ملاحظة مهمة:</strong> تتطلب المسارات الإدارية صلاحيات مشرف (Admin) وتوكن JWT صالح.
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>عناوين URL الأساسية</h2>
+            <p><strong>المسارات العامة:</strong> <code>https://visitsyria.fun/api/v1/new-events/festivals-events</code></p>
+            <p><strong>المسارات الإدارية:</strong> <code>https://visitsyria.fun/api/v1/admin/festivals-events</code></p>
+        </div>
+        
+        <div class="card">
+            <h2>المسارات</h2>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>new-events/festivals-events</code>
+                <h3>الحصول على جميع الفعاليات والمهرجانات</h3>
+                <p>استرجاع قائمة بجميع الفعاليات والمهرجانات مع دعم التصفح.</p>
+                
+                <h4>معلمات الاستعلام</h4>
+                <table>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>النوع</th>
+                        <th>مطلوب</th>
+                        <th>الوصف</th>
+                    </tr>
+                    <tr>
+                        <td>page</td>
+                        <td>عدد صحيح</td>
+                        <td>لا</td>
+                        <td>رقم الصفحة للتصفح (الافتراضي: 1)</td>
+                    </tr>
+                    <tr>
+                        <td>limit</td>
+                        <td>عدد صحيح</td>
+                        <td>لا</td>
+                        <td>عدد الفعاليات في كل صفحة (الافتراضي: 6، الحد الأقصى: 100)</td>
+                    </tr>
+                </table>
+                
+                <h4>الاستجابة</h4>
+                <p>تُرجع مصفوفة JSON من كائنات الفعاليات مع معلومات التصفح.</p>
+                
+                <div class="example">
+                    <h4>مثال على الاستجابة</h4>
+                    <pre>
+{
+  "status": "success",
+  "message": "✅ All festivals and events retrieved successfully.",
+  "count": 2,
+  "data": [
+    {
+      "id": 1,
+      "placeAr": "دمشق",
+      "placeEn": "Damascus",
+      "latitude": "33.51380000",
+      "longitude": "36.27650000",
+      "dateTime": "2025-12-25T18:00:00.000Z",
+      "descriptionAr": "مهرجان موسيقي شرقي تقليدي",
+      "descriptionEn": "Traditional Eastern Music Festival",
+      "media": [],
+      "officialSupporterAr": "وزارة الثقافة",
+      "officialSupporterEn": "Ministry of Culture",
+      "durationAr": "3 أيام",
+      "durationEn": "3 days",
+      "cost": "0.00",
+      "targetAudienceAr": "محبوب الموسيقى",
+      "targetAudienceEn": "Music lovers",
+      "notesAr": "حضور مجاني",
+      "notesEn": "Free attendance",
+      "createdAt": "2025-11-02T10:00:00.000Z",
+      "updatedAt": "2025-11-02T10:00:00.000Z"
+    }
+  ],
+  "pagination": {
+    "currentPage": 1,
+    "totalPages": 1,
+    "totalItems": 2,
+    "itemsPerPage": 6
+  }
+}
+                    </pre>
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>new-events/festivals-events/:id</code>
+                <h3>الحصول على فعالية أو مهرجان محدد</h3>
+                <p>استرجاع فعالية أو مهرجان محدد باستخدام معرفه.</p>
+                
+                <h4>المعلمات</h4>
+                <table>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>النوع</th>
+                        <th>مطلوب</th>
+                        <th>الوصف</th>
+                    </tr>
+                    <tr>
+                        <td>id</td>
+                        <td>عدد صحيح</td>
+                        <td class="required">نعم</td>
+                        <td>معرف الفعالية أو المهرجان</td>
+                    </tr>
+                </table>
+                
+                <h4>الاستجابة</h4>
+                <p>تُرجع كائن الفعالية أو المهرجان المطلوب.</p>
+                
+                <div class="example">
+                    <h4>مثال على الاستجابة</h4>
+                    <pre>
+{
+  "status": "success",
+  "message": "✅ Festival or Event found.",
+  "data": {
+    "id": 1,
+    "placeAr": "دمشق",
+    "placeEn": "Damascus",
+    "latitude": "33.51380000",
+    "longitude": "36.27650000",
+    "dateTime": "2025-12-25T18:00:00.000Z",
+    "descriptionAr": "مهرجان موسيقي شرقي تقليدي",
+    "descriptionEn": "Traditional Eastern Music Festival",
+    "media": [],
+    "officialSupporterAr": "وزارة الثقافة",
+    "officialSupporterEn": "Ministry of Culture",
+    "durationAr": "3 أيام",
+    "durationEn": "3 days",
+    "cost": "0.00",
+    "targetAudienceAr": "محبوب الموسيقى",
+    "targetAudienceEn": "Music lovers",
+    "notesAr": "حضور مجاني",
+    "notesEn": "Free attendance",
+    "createdAt": "2025-11-02T10:00:00.000Z",
+    "updatedAt": "2025-11-02T10:00:00.000Z"
+  }
+}
+                    </pre>
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>admin/festivals-events</code>
+                <h3>إنشاء فعالية أو مهرجان</h3>
+                <p>إنشاء فعالية أو مهرجان جديد مع عناوين باللغتين العربية والإنجليزية، الموقع، التاريخ، الوصف، وملفات الوسائط الاختيارية. يتطلب توثيق المشرف.</p>
+                
+                <h4>محتوى الطلب (multipart/form-data)</h4>
+                <table>
+                    <tr>
+                        <th>الحقل</th>
+                        <th>النوع</th>
+                        <th>مطلوب</th>
+                        <th>الوصف</th>
+                    </tr>
+                    <tr>
+                        <td>placeAr</td>
+                        <td>نص</td>
+                        <td class="required">نعم</td>
+                        <td>اسم المكان بالعربية</td>
+                    </tr>
+                    <tr>
+                        <td>placeEn</td>
+                        <td>نص</td>
+                        <td class="required">نعم</td>
+                        <td>اسم المكان بالإنجليزية</td>
+                    </tr>
+                    <tr>
+                        <td>latitude</td>
+                        <td>عدد عشري</td>
+                        <td class="required">نعم</td>
+                        <td>إحداثيات خط العرض لموقع الفعالية</td>
+                    </tr>
+                    <tr>
+                        <td>longitude</td>
+                        <td>عدد عشري</td>
+                        <td class="required">نعم</td>
+                        <td>إحداثيات خط الطول لموقع الفعالية</td>
+                    </tr>
+                    <tr>
+                        <td>dateTime</td>
+                        <td>تاريخ ووقت</td>
+                        <td class="required">نعم</td>
+                        <td>تاريخ ووقت الفعالية</td>
+                    </tr>
+                    <tr>
+                        <td>descriptionAr</td>
+                        <td>نص</td>
+                        <td class="required">نعم</td>
+                        <td>وصف الفعالية بالعربية</td>
+                    </tr>
+                    <tr>
+                        <td>descriptionEn</td>
+                        <td>نص</td>
+                        <td class="required">نعم</td>
+                        <td>وصف الفعالية بالإنجليزية</td>
+                    </tr>
+                    <tr>
+                        <td>officialSupporterAr</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>اسم الداعم الرسمي بالعربية</td>
+                    </tr>
+                    <tr>
+                        <td>officialSupporterEn</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>اسم الداعم الرسمي بالإنجليزية</td>
+                    </tr>
+                    <tr>
+                        <td>durationAr</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>مدة الفعالية بالعربية</td>
+                    </tr>
+                    <tr>
+                        <td>durationEn</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>مدة الفعالية بالإنجليزية</td>
+                    </tr>
+                    <tr>
+                        <td>cost</td>
+                        <td>عدد عشري</td>
+                        <td>لا</td>
+                        <td>تكلفة الفعالية</td>
+                    </tr>
+                    <tr>
+                        <td>targetAudienceAr</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>الجمهور المستهدف بالعربية</td>
+                    </tr>
+                    <tr>
+                        <td>targetAudienceEn</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>الجمهور المستهدف بالإنجليزية</td>
+                    </tr>
+                    <tr>
+                        <td>notesAr</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>ملاحظات بالعربية</td>
+                    </tr>
+                    <tr>
+                        <td>notesEn</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>ملاحظات بالإنجليزية</td>
+                    </tr>
+                    <tr>
+                        <td>classification</td>
+                        <td>نص</td>
+                        <td>لا</td>
+                        <td>تصنيف الفعالية أو المهرجان (art, history, science, culture, technology, literature, music, photography, crafts, food, fashion, nature, religion, sports, other)</td>
+                    </tr>
+                    <tr>
+                        <td>classificationLabel</td>
+                        <td>كائن</td>
+                        <td>لا</td>
+                        <td>تسمية التصنيف باللغتين العربية والإنجليزية (يتم إنشاؤه تلقائيًا)</td>
+                    </tr>
+                    <tr>
+                        <td>images</td>
+                        <td>ملف</td>
+                        <td>لا</td>
+                        <td>ملفات صور الفعالية (JPEG, PNG, إلخ) - دعم لملفات متعددة</td>
+                    </tr>
+                </table>
+                
+                <h4>الاستجابة</h4>
+                <p>تُرجع كائن الفعالية أو المهرجان الذي تم إنشاؤه.</p>
+                
+                <div class="example">
+                    <h4>مثال على الطلب</h4>
+                    <p>POST admin/festivals-events</p>
+                    <p>Content-Type: multipart/form-data</p>
+                    <p>Headers: Authorization: Bearer [admin-jwt-token]</p>
+                    <p>Form Data:</p>
+                    <ul>
+                        <li>placeAr: "دمشق"</li>
+                        <li>placeEn: "Damascus"</li>
+                        <li>latitude: "33.5138"</li>
+                        <li>longitude: "36.2765"</li>
+                        <li>dateTime: "2025-12-25T18:00:00.000Z"</li>
+                        <li>descriptionAr: "مهرجان موسيقي شرقي تقليدي"</li>
+                        <li>descriptionEn: "Traditional Eastern Music Festival"</li>
+                        <li>officialSupporterAr: "وزارة الثقافة"</li>
+                        <li>officialSupporterEn: "Ministry of Culture"</li>
+                        <li>durationAr: "3 أيام"</li>
+                        <li>durationEn: "3 days"</li>
+                        <li>cost: "0.00"</li>
+                        <li>targetAudienceAr: "محبوب الموسيقى"</li>
+                        <li>targetAudienceEn: "Music lovers"</li>
+                        <li>notesAr: "حضور مجاني"</li>
+                        <li>notesEn: "Free attendance"</li>
+                        <li>classification: "music"</li>
+                        <li>images: [ملفات الصور]</li>
+                    </ul>
+                    
+                    <h4>مثال على الاستجابة</h4>
+                    <pre>
+{
+  "status": "success",
+  "message": "✅ Festival or Event created successfully.",
+  "data": {
+    "id": 1,
+    "placeAr": "دمشق",
+    "placeEn": "Damascus",
+    "latitude": "33.51380000",
+    "longitude": "36.27650000",
+    "dateTime": "2025-12-25T18:00:00.000Z",
+    "descriptionAr": "مهرجان موسيقي شرقي تقليدي",
+    "descriptionEn": "Traditional Eastern Music Festival",
+    "media": [],
+    "officialSupporterAr": "وزارة الثقافة",
+    "officialSupporterEn": "Ministry of Culture",
+    "durationAr": "3 أيام",
+    "durationEn": "3 days",
+    "cost": "0.00",
+    "targetAudienceAr": "محبوب الموسيقى",
+    "targetAudienceEn": "Music lovers",
+    "notesAr": "حضور مجاني",
+    "notesEn": "Free attendance",
+    "classification": "music",
+    "classificationLabel": {
+      "ar": "موسيقى",
+      "en": "Music"
+    },
+    "updatedAt": "2025-11-02T10:00:00.000Z",
+    "createdAt": "2025-11-02T10:00:00.000Z"
+  }
+}
+
+                    </pre>
+                </div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <code>admin/festivals-events/:id</code>
+                <h3>تحديث فعالية أو مهرجان</h3>
+                <p>تحديث فعالية أو مهرجان موجود. يتطلب توثيق المشرف.</p>
+                
+                <h4>المعلمات</h4>
+                <table>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>النوع</th>
+                        <th>مطلوب</th>
+                        <th>الوصف</th>
+                    </tr>
+                    <tr>
+                        <td>id</td>
+                        <td>عدد صحيح</td>
+                        <td class="required">نعم</td>
+                        <td>معرف الفعالية أو المهرجان المراد تحديثه</td>
+                    </tr>
+                </table>
+                
+                <h4>محتوى الطلب (multipart/form-data)</h4>
+                <p>نفس الحقول الموجودة في إنشاء الفعالية، مع معلمة إضافية:</p>
+                <table>
+                    <tr>
+                        <th>الحقل</th>
+                        <th>النوع</th>
+                        <th>مطلوب</th>
+                        <th>الوصف</th>
+                    </tr>
+                    <tr>
+                        <td>removeMedia</td>
+                        <td>مصفوفة</td>
+                        <td>لا</td>
+                        <td>مصفوفة معرفات ملفات الوسائط المراد إزالتها</td>
+                    </tr>
+                </table>
+                
+                <h4>الاستجابة</h4>
+                <p>تُرجع كائن الفعالية أو المهرجان المحدث.</p>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <code>admin/festivals-events/:id</code>
+                <h3>حذف فعالية أو مهرجان</h3>
+                <p>حذف فعالية أو مهرجان موجود. يتطلب توثيق المشرف.</p>
+                
+                <h4>المعلمات</h4>
+                <table>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>النوع</th>
+                        <th>مطلوب</th>
+                        <th>الوصف</th>
+                    </tr>
+                    <tr>
+                        <td>id</td>
+                        <td>عدد صحيح</td>
+                        <td class="required">نعم</td>
+                        <td>معرف الفعالية أو المهرجان المراد حذفه</td>
+                    </tr>
+                </table>
+                
+                <h4>الاستجابة</h4>
+                <p>تُرجع رسالة نجاح.</p>
+                
+                <div class="example">
+                    <h4>مثال على الاستجابة</h4>
+                    <pre>
+{
+  "status": "success",
+  "message": "🗑️ Festival or Event deleted successfully."
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>استجابات الأخطاء</h2>
+            <table>
+                <tr>
+                    <th>رمز الحالة</th>
+                    <th>الرسالة</th>
+                    <th>الوصف</th>
+                </tr>
+                <tr>
+                    <td>400</td>
+                    <td>طلب غير صحيح</td>
+                    <td>بيانات الطلب غير صحيحة أو حقول مطلوبة مفقودة</td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>غير مصرح</td>
+                    <td>توكن التوثيق مفقود أو غير صالح</td>
+                </tr>
+                <tr>
+                    <td>403</td>
+                    <td>محظور</td>
+                    <td>صلاحيات غير كافية (يتطلب مشرف)</td>
+                </tr>
+                <tr>
+                    <td>404</td>
+                    <td>غير موجود</td>
+                    <td>الفعالية أو المهرجان بالمعرف المحدد غير موجود</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>خطأ داخلي في الخادم</td>
+                    <td>خطأ من جانب الخادم</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
