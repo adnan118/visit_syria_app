@@ -33,20 +33,20 @@ module.exports = {
   
   // رقم المنفذ الذي سيستمع عليه السيرفر
   // إذا لم يكن موجوداً في المتغيرات البيئية، يستخدم 3000
-  PORT: process.env.PORT || 3003,
+  PORT: process.env.PORT || 7003,
   
   // MySQL Database Configuration
   // عنوان مضيف قاعدة البيانات
-  DB_HOST: process.env.DB_HOST || "localhost",
-  
+  DB_HOST: process.env.DB_HOST || "127.0.0.1",
+
   // اسم المستخدم لقاعدة البيانات
-  DB_USER: process.env.DB_USER || "root",
+  DB_USER: process.env.DB_USER || "vs_user",
   
   // كلمة مرور قاعدة البيانات
-  DB_PASSWORD: process.env.DB_PASSWORD || "",
+  DB_PASSWORD: process.env.DB_PASSWORD || "Vs123456!",
   
   // اسم قاعدة البيانات
-  DB_NAME: process.env.DB_NAME || "vs_app_db",
+  DB_NAME: process.env.DB_NAME || "vs_application_db",
   
   // منفذ قاعدة البيانات
   DB_PORT: process.env.DB_PORT || 3306,
