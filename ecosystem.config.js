@@ -18,7 +18,7 @@ module.exports = {
         DB_USER: "root",
         DB_PASSWORD: "",
         DB_NAME: "vs_application_db",
-        DB_PORT: 3307,
+        DB_PORT: 3306,
 
         EMAIL: "vistsyria@gmail.com",
         EMAIL_PASSWORD: "ruqvxelvigdqqwkq",
@@ -59,4 +59,5 @@ module.exports = {
 // pm2 monit                  - Monitor resources
 // pm2 save                   - Save current process list
 // pm2 startup                - Setup startup script
+
 
