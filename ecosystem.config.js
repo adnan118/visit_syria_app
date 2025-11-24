@@ -8,7 +8,7 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         HOST:  "0.0.0.0",
-        PORT: 7003,
+        PORT: 7004,
         API_URL: "/api/v1",
         API: "/api/v1",
         ACCESS_TOKEN_SECRET: "vistsyriav11234",
@@ -59,5 +59,6 @@ module.exports = {
 // pm2 monit                  - Monitor resources
 // pm2 save                   - Save current process list
 // pm2 startup                - Setup startup script
+
 
 
