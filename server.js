@@ -38,8 +38,8 @@ app.use((req, res, next) => {
 });
  app.use(cors({
   origin: [
-    "https://visitsyria.fun", 
-    "https://www.visitsyria.fun", 
+   
+    "https://application.visitsyria.fun", 
       "http://localhost:3606",
       "http://localhost:3000",
   ],
