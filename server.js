@@ -36,12 +36,33 @@ app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
   next();
 });
+ app.use(cors({
+  origin: [
+    "https://visitsyria.fun", 
+    "https://www.visitsyria.fun", 
+      "http://localhost:3606",
+      "http://localhost:3000",
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization", "x-access-token"]
+}));
 
-app.use(cors()); // تفعيل CORS للسماح بالطلبات من أي مصدر خارجي
-app.use(morgan("dev")); // تفعيل Morgan بنمط dev لعرض الطلبات بشكل مختصر وملون
-app.use(bodyParser.json()); // تفعيل body-parser لتحويل جسم الطلبات إلى JSON تلقائيًا
-app.use(bodyParser.urlencoded({ extended: true })); // تفعيل body-parser للبيانات المشفرة
-// تهيئة Helmet للسماح بعرض الوسائط عبر أصول مختلفة (Cross-Origin)
+// دعم طلبات OPTIONS (preflight)
+app.options("*", cors());
+
+// تمكين Morgan بأسلوب المطور لعرض الطلبات بشكل مختصر وملون
+// يعرض معلومات الطلب مثل النوع ورمز الحالة بألوان يسهل قراءتها
+app.use(morgan("dev"));
+
+// تمكين body-parser لتحويل نصوص الطلبات إلى JSON تلقائيًا
+// يحول البيانات المرسلة في النص إلى كائن JavaScript
+app.use(bodyParser.json());
+
+// تمكين body-parser للبيانات المشفرة
+// يدعم تحليل البيانات المشفرة في النماذج
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }, // السماح بعرض الصور/الفيديو عبر أصول مختلفة
