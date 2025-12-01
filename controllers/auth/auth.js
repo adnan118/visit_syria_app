@@ -145,7 +145,7 @@ exports.login = async function (req, res, next) {
     
     const accessToken = tokenService.generateAccessToken(userObj);
     const refreshToken = tokenService.generateRefreshToken(userObj);
-    await tokenService.saveToken(userObj.id, accessToken, refreshToken);
+    await tokenService.saveToken(userObj.id, accessToken, refreshToken, userObj);
 
     // إرسال تنبيه تسجيل الدخول
     await mailSender.sendEmailNewLogin(
@@ -487,7 +487,7 @@ exports.socialLogin = async function (req, res, next) {
     
     const accessToken = tokenService.generateAccessToken(userObj);
     const refreshToken = tokenService.generateRefreshToken(userObj);
-    await tokenService.saveToken(userObj.id, accessToken, refreshToken);
+    await tokenService.saveToken(userObj.id, accessToken, refreshToken, userObj);
 
     // إرسال تنبيه تسجيل الدخول
     await mailSender.sendEmailNewLogin(
@@ -704,7 +704,7 @@ exports.firebaseLogin = async function (req, res, next) {
     // إنشاء التوكنات
     const accessToken = tokenService.generateAccessToken(user);
     const refreshToken = tokenService.generateRefreshToken(user);
-    await tokenService.saveToken(user.id, accessToken, refreshToken);
+    await tokenService.saveToken(user.id, accessToken, refreshToken, user);
 
     // إزالة معلومات حساسة
     const userObj = user.toObject();
