@@ -90,7 +90,7 @@ exports.register = async function (req, res, next) {
     return res.status(201).json({
       status: "success",
       message: "User created successfully.",
-      data: { ...userObj, accessToken },
+      data: { ...userObj, accessToken, refreshToken },
     });
   } catch (error) {
     next(error);
@@ -157,7 +157,8 @@ exports.login = async function (req, res, next) {
     return res.json({
       status: "success",
       message: "Login successful",
-      data: { ...userObj, accessToken },
+      data: { ...userObj, accessToken, refreshToken },
+
     });
   } catch (error) {
     next(error);
@@ -498,7 +499,7 @@ exports.socialLogin = async function (req, res, next) {
     return res.json({
       status: "success",
       message: "Social login successful",
-      data: { ...userObj, accessToken },
+      data: { ...userObj, accessToken, refreshToken },
     });
   } catch (error) {
     next(error);
@@ -727,7 +728,8 @@ exports.firebaseLogin = async function (req, res, next) {
     return res.json({
       status: "success",
       message: `Firebase ${provider} login successful`,
-      data: { ...userObj, accessToken },
+      data: { ...userObj, accessToken, refreshToken },
+
     });
   } catch (error) {
     next(error);
@@ -923,4 +925,69 @@ exports.resetPassword = async function (req, res, next) {
     next(error);
   }
 };
+
+/* =========================================================
+
+   📌 Refresh Token
+
+========================================================= */
+
+exports.refreshToken = async function (req, res, next) {
+
+  try {
+
+    const { refreshToken } = req.body;
+
+
+
+    if (!refreshToken) {
+
+      const error = new Error("Refresh token is required");
+
+      error.status = 400;
+
+      throw error;
+
+    }
+
+
+
+    // Refresh the tokens using the token service
+
+    const newTokens = await tokenService.refreshTokens(refreshToken);
+
+
+
+    return res.status(200).json({
+
+      status: "success",
+
+      message: "Tokens refreshed successfully",
+
+      data: {
+
+        accessToken: newTokens.accessToken,
+
+        refreshToken: newTokens.refreshToken
+
+      }
+
+    });
+
+  } catch (error) {
+
+    // Convert token errors to 401 status
+
+    if (error.message.includes("Invalid") || error.message.includes("expired")) {
+
+      error.status = 401;
+
+    }
+
+    next(error);
+
+  }
+
+};
+
  
