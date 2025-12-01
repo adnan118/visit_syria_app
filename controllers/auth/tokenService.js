@@ -122,8 +122,8 @@ async function refreshTokens(refreshToken) {
     const newRefreshToken = generateRefreshToken(userPayload);
     
     // حفظ التوكنات الجديدة في قاعدة البيانات
-    await saveToken(decoded.userId, newAccessToken, newRefreshToken);
-    
+    await saveToken(decoded.userId, newAccessToken, newRefreshToken, userPayload);
+
     return {
       accessToken: newAccessToken,
       refreshToken: newRefreshToken
