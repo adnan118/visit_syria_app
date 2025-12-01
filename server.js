@@ -97,11 +97,6 @@ app.use(
   express.static(__dirname + "/public/uploads")
 );
 
-// تطبيق middleware الـ JWT على طلبات API فقط
-app.use(authJwt());
-
-// تطبيق معالج أخطاء JWT (تجديد الـ tokens)
-app.use(errorHandlerMiddleWares);
 // استيراد الـ middlewares
 
 //admin routes
@@ -131,7 +126,17 @@ const visaTypesRouter = require("./routes/users/visaTypes"); // استيراد �
 const eVisaRouter = require("./routes/eVisa"); // استيراد مسارات الطلبات الإلكترونية للتأشيرات
 const { startStoryCleanupJobs } = require("./jobs/storyCleanup"); // استيراد وظيفة التنظيف
 
+// تسجيل مسار التوثيق أولاً قبل تطبيق JWT middleware
+// هذا يضمن أن مسارات التحديث والتحقق من التوكن غير محمية
 app.use(`${config.API}/`, authRouter); // ربط مسارات التوثيق بالمسار الأساسي للـ API-auth
+
+// تطبيق middleware الـ JWT على طلبات API فقط (بعد تسجيل مسارات التوثيق)
+app.use(authJwt());
+
+// تطبيق معالج أخطاء JWT (تجديد الـ tokens)
+app.use(errorHandlerMiddleWares);
+
+// ربط باقي المسارات (التي تحتاج إلى توثيق)
 app.use(`${config.API}/users`, usersRouter); // ربط مسارات التوثيق بالمسار الأساسي للـ API-users
 app.use(`${config.API}/users`, userInterestsRouter); // ربط مسارات اهتمامات المستخدمين
 app.use(`${config.API}/posts`, postsRouter);
@@ -215,4 +220,4 @@ app.listen(config.PORT, config.HOST, () => {
   console.log(`Server is running at http://${config.HOST}:${config.PORT}`);
 });
 
-//https://visitsyria.fun/api/v1
+ 
