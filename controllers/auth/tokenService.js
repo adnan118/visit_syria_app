@@ -92,9 +92,56 @@ async function verifyTokenInDb(accessToken) {
   }
 }
 
+/**
+ * تجديد التوكنات باستخدام refreshToken
+ * @param {String} refreshToken - توكن التجديد
+ */
+async function refreshTokens(refreshToken) {
+  try {
+    // التحقق من صحة refreshToken
+    const decoded = jwt.verify(refreshToken, config.REFRESH_TOKEN_SECRET);
+    
+    // البحث عن التوكن في قاعدة البيانات
+    const tokenDoc = await Token.findOne({ where: { refreshToken } });
+    if (!tokenDoc) {
+      throw new Error("Invalid refresh token");
+    }
+    
+    // إنشاء توكنات جديدة
+    const userPayload = {
+      id: decoded.id,
+      userId: decoded.userId,
+      firstName: decoded.firstName,
+      email: decoded.email,
+      mobile: decoded.mobile,
+      isAdmin: decoded.isAdmin,
+      isActive: decoded.isActive,
+    };
+    
+    const newAccessToken = generateAccessToken(userPayload);
+    const newRefreshToken = generateRefreshToken(userPayload);
+    
+    // حفظ التوكنات الجديدة في قاعدة البيانات
+    await saveToken(decoded.userId, newAccessToken, newRefreshToken);
+    
+    return {
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken
+    };
+  } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      throw new Error("Refresh token expired");
+    }
+    throw new Error("Invalid refresh token");
+  }
+}
+
+
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
   saveToken,
   verifyTokenInDb,
+  refreshTokens
+
 };
