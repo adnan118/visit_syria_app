@@ -214,7 +214,7 @@ router.get("/verify-token", authController.verifyToken);
 // مسار طلب استعادة كلمة المرور
 router.post("/forgot-password", authController.forgotPassword);
 
-// مسار التحقق من رمز OTP المرسل لاستعادة كلمة المرور
+مسار التحقق من رمز OTP المرسل لاستعادة كلمة المرور2
 router.post("/verify-otp", authController.verifyPasswordResetOtp);
 
 // مسار إعادة تعيين كلمة المرور بعد التحقق من الرمز
@@ -241,4 +241,5 @@ router.post('/create-custom-token', async (req, res) => {
   }
 });
 module.exports = router;
+
 
