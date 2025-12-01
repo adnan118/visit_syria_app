@@ -205,6 +205,8 @@ router.post(
   handleValidationErrors,
   authController.register
 );
+// ✅ مسار تجديد التوكن
+router.post("/refresh-token", authController.refreshToken);
 
 // ✅ مسار التحقق من صلاحية التوكن
 router.get("/verify-token", authController.verifyToken);
@@ -239,3 +241,4 @@ router.post('/create-custom-token', async (req, res) => {
   }
 });
 module.exports = router;
+
