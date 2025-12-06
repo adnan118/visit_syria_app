@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
         allowNull: false
       },
-      city_id: {
+      cityId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
