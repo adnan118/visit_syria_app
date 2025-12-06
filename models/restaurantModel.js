@@ -73,6 +73,7 @@ const Restaurant = sequelize.define('Restaurant', {
       'Fast Food',                 // وجبات سريعة
       'Traditional'                // شعبي
     ),
+    field: 'cuisine_type',        // Map to snake_case column in database
     allowNull: false
   },
 
@@ -96,6 +97,7 @@ const Restaurant = sequelize.define('Restaurant', {
       '12:00-24:00',               // من 12 ظهراً حتى 12 منتصف الليل
       '16:00-02:00'                // من 4 عصراً حتى 2 صباحاً
     ),
+    field: 'opening_hours',        // Map to snake_case column in database
     allowNull: false,
     defaultValue: '09:00-17:00'    // القيمة الافتراضية: من 9 صباحاً حتى 5 مساءً
   },
@@ -109,6 +111,7 @@ const Restaurant = sequelize.define('Restaurant', {
       'Monday to Friday',          // الاثنين إلى الجمعة
       'Custom Days'                // أيام مخصصة
     ),
+    field: 'working_days',         // Map to snake_case column in database
     allowNull: false,
     defaultValue: 'All Week'       // القيمة الافتراضية: كل أيام الأسبوع
   },
@@ -116,19 +119,22 @@ const Restaurant = sequelize.define('Restaurant', {
   // الصور (كصفيف من الروابط)
   images: {
     type: DataTypes.JSON,           // نوع الحقل: JSON
+    field: 'images',               // Column name in database
     allowNull: false,                // حقل اختياري
     defaultValue: []               // القيمة الافتراضية: مصفوفة فارغة
   },
 
   // أرقام الهاتف
   phoneNumbers: {
-    type: DataTypes.STRING,         // نوع الحقل: نص قصير
+    type: DataTypes.STRING,         // نوع الحقل: نص قريد
+    field: 'phone_numbers',        // Map to snake_case column in database
     allowNull: false                // حقل مطلوب
   },
 
   // روابط التواصل الاجتماعي
   socialLinks: {
     type: DataTypes.JSON,           // نوع الحقل: JSON
+    field: 'social_links',         // Map to snake_case column in database
     allowNull: true,                // حقل اختياري
     defaultValue: {}               // القيمة الافتراضية: كائن فارغ
   },
@@ -136,24 +142,28 @@ const Restaurant = sequelize.define('Restaurant', {
   // نقطة الطول
   latitude: {
     type: DataTypes.DECIMAL(10, 8), // نوع الحقل: رقم عشري
+    field: 'latitude',             // Column name in database
     allowNull: false                // حقل اختياري
   },
 
   // نقطة العرض
   longitude: {
     type: DataTypes.DECIMAL(11, 8), // نوع الحقل: رقم عشري
+    field: 'longitude',            // Column name in database
     allowNull: false                // حقل اختياري
   },
 
   // تاريخ الإنشاء
   createdAt: {
     type: DataTypes.DATE,
+    field: 'created_at',          // Map to snake_case column in database
     defaultValue: DataTypes.NOW    // القيمة الافتراضية: الوقت الحالي
   },
 
   // تاريخ آخر تحديث
   updatedAt: {
     type: DataTypes.DATE,
+    field: 'updated_at',          // Map to snake_case column in database
     defaultValue: DataTypes.NOW
   }
 
