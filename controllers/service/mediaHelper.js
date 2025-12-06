@@ -2073,6 +2073,15 @@ const createCafeteriaUploader = () => {
         limits: limits
     });
 };
+// دوال رفع مخصصة للفنون والثقافة
+const createArtsCultureUploader = () => {
+    const artsCultureStorage = createCustomStorage('arts_culture');
+    return multer({
+        storage: artsCultureStorage,
+        fileFilter: fileFilter,
+        limits: limits
+    });
+};
 // دوال رفع مخصصة للمطاعم
 const createRestaurantUploader = () => {
     const restaurantStorage = createCustomStorage('restaurants');
@@ -2119,6 +2128,14 @@ const cafeteriaUploader = createCafeteriaUploader();
 const uploadCafeteriaImage = cafeteriaUploader.single('image');
 const uploadCafeteriaImages = cafeteriaUploader.array('images', 10);
 const uploadCafeteriaMixed = cafeteriaUploader.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+]);
+// دوال رفع مخصصة للفنون والثقافة
+const artsCultureUploader = createArtsCultureUploader();
+const uploadArtsCultureImage = artsCultureUploader.single('image');
+const uploadArtsCultureImages = artsCultureUploader.array('images', 10);
+const uploadArtsCultureMixed = artsCultureUploader.fields([
     { name: 'image', maxCount: 1 },
     { name: 'images', maxCount: 10 }
 ]);
@@ -2525,6 +2542,27 @@ const uploadCafeteriaImagesWithCompression = async (req, res, next, compress = t
         next(error);
     }
 };
+// دالة رفع وسائط الفنون والثقافة مع الضغط وبناء req.dbFiles
+const uploadArtsCultureImageWithCompression = async (req, res, next, compress = true) => {
+    try {
+        await uploadAndCompress(req, res, uploadArtsCultureMixed, compress);
+        // بناء قائمة أسماء الملفات النهائية للاستخدام في الكنترولر
+        const extract = (f) => String(f?.dbFileName || f?.path || f?.filename || '')
+            .replace(/\\/g, '/')
+            .split('/')
+            .pop();
+        const map = {};
+        if (req.files && !Array.isArray(req.files)) {
+            for (const fieldName in req.files) {
+                map[fieldName] = req.files[fieldName].map(extract);
+            }
+        }
+        req.dbFiles = map;
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
 
 const uploadRestaurantImagesWithCompression = async (req, res, next, compress = true) => {
     try {
@@ -2671,6 +2709,12 @@ module.exports = {
   uploadCafeteriaMixed,
   uploadCafeteriaImagesWithCompression,
 
+  // دوال رفع مخصصة للفنون والثقافة
+  uploadArtsCultureImage,
+  uploadArtsCultureImages,
+  uploadArtsCultureMixed,
+  uploadArtsCultureImageWithCompression,
+
   // دوال رفع مخصصة لـ eVisa
   uploadEVisaMixed,
   uploadEVisaFilesWithCompression,
@@ -2686,6 +2730,8 @@ module.exports = {
   createTourGuideUploader,
   createExperienceUploader,
   createEVisaUploader,
+  // دوال إنشاء uploaders مخصصة للفنون والثقافة
+  createArtsCultureUploader,
 
   // دوال الضغط
   compressImage,
