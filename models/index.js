@@ -42,6 +42,7 @@ const EVisa = require('./eVisaModel'); // استيراد نموذج eVisa
 const VisaType = require('./visaTypeModel'); // استيراد نموذج نوع التأشيرة
 const Restaurant = require('./restaurantModel'); // استيراد نموذج المطعم
 const Cafeteria = require('./cafeteriaModel'); // استيراد نموذج الكافتيريا
+const ArtsCulture = require('./artsCultureModel'); // استيراد نموذج الفنون والثقافة
 
 // تحديد العلاقات بين النماذج (تجنب تعريفها إذا كانت موجودة بالفعل)
 
@@ -414,5 +415,6 @@ module.exports = {
   EVisa, // تصدير نموذج eVisa
   VisaType, // تصدير نموذج نوع التأشيرة
   Restaurant, // تصدير نموذج المطعم
-  Cafeteria // تصدير نموذج الكافتيريا
+  Cafeteria, // تصدير نموذج الكافتيريا
+  ArtsCulture // تصدير نموذج الفنون والثقافة
 };
