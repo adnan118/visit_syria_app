@@ -15,7 +15,7 @@
 */
 
 // استيراد نموذج الفنون والثقافة
-const ArtsCulture = require('../../models/artsCultureModel');
+const { ArtsCulture } = require('../../models');
 
 // استيراد دوال مساعدة للوسائط
 const { handleUploadError } = require("../services/mediaHelper");
