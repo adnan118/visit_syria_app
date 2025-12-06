@@ -347,14 +347,14 @@ if (!Explore.associations || !Explore.associations.city) {
 // العلاقة بين المدن والمطاعم
 if (!City.associations || !City.associations.restaurants) {
   City.hasMany(Restaurant, {
-    foreignKey: 'city_id',
+    foreignKey: 'cityId',
     as: 'restaurants'
   });
 }
 
 if (!Restaurant.associations || !Restaurant.associations.city) {
   Restaurant.belongsTo(City, {
-    foreignKey: 'city_id',
+    foreignKey: 'cityId',
     as: 'city'
   });
 }
@@ -362,14 +362,14 @@ if (!Restaurant.associations || !Restaurant.associations.city) {
 // العلاقة بين المدن والكافتيريا
 if (!City.associations || !City.associations.cafeterias) {
   City.hasMany(Cafeteria, {
-    foreignKey: 'city_id',
+    foreignKey: 'cityId',
     as: 'cafeterias'
   });
 }
 
 if (!Cafeteria.associations || !Cafeteria.associations.city) {
   Cafeteria.belongsTo(City, {
-    foreignKey: 'city_id',
+    foreignKey: 'cityId',
     as: 'city'
   });
 }
