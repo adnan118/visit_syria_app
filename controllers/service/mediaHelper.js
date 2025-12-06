@@ -16,6 +16,37 @@ const path = require("path"); // استيراد وحدة path للتعامل م�
 const fs = require("fs"); // استيراد وحدة fs للتعامل مع نظام الملفات
 const sharp = require("sharp"); // استيراد مكتبة sharp لضغط الصور
 const ffmpeg = require("fluent-ffmpeg"); // استيراد مكتبة fluent-ffmpeg لضغط الفيديو
+const os = require("os"); // استيراد مكتبة os للتحقق من نظام التشغيل
+
+// تحديد مسار FFmpeg بناءً على البيئة
+function setupFFmpegPaths() {
+  const platform = os.platform();
+
+  if (platform === "win32") {
+    // Windows - محلي
+    const windowsFFmpegPath =
+      "C:\\ffmpeg\\ffmpeg-8.0-essentials_build\\bin\\ffmpeg.exe";
+    const windowsFFprobePath =
+      "C:\\ffmpeg\\ffmpeg-8.0-essentials_build\\bin\\ffprobe.exe";
+
+    // التحقق من وجود الملفات
+    const fs = require("fs");
+    if (fs.existsSync(windowsFFmpegPath) && fs.existsSync(windowsFFprobePath)) {
+      ffmpeg.setFfmpegPath(windowsFFmpegPath);
+      ffmpeg.setFfprobePath(windowsFFprobePath);
+      console.log("✅ تم تحديد مسار FFmpeg للـ Windows");
+      return true;
+    }
+  }
+
+  // Linux/Unix (السيرفر) - سيستخدم FFmpeg من PATH
+  // لا نحتاج لتحديد مسار صريح، fluent-ffmpeg سيجد FFmpeg تلقائياً
+  console.log("🔍 سيتم البحث عن FFmpeg في PATH (مناسب للسيرفر)");
+  return false; // سيعتمد على PATH
+}
+
+// تطبيق إعدادات FFmpeg
+const isWindowsFFmpeg = setupFFmpegPaths();
 const { promisify } = require("util"); // استيراد promisify لتحويل الدوال إلى promises
 
 /**
@@ -277,6 +308,57 @@ const compressImage = async (inputPath, outputPath, format = "jpg") => {
 };
 
 /**
+ * دالة للتحقق من وجود FFmpeg على النظام
+ * @returns {Promise<boolean>} - true إذا كان FFmpeg متاحاً، false إذا لم يكن متاحاً
+ */
+const checkFFmpegAvailability = () => {
+  return new Promise((resolve) => {
+    const { exec } = require("child_process");
+    const platform = os.platform();
+
+    let testCommand;
+
+    if (platform === "win32" && isWindowsFFmpeg) {
+      // Windows مع مسار محدد
+      const ffmpegPath =
+        "C:\\ffmpeg\\ffmpeg-8.0-essentials_build\\bin\\ffmpeg.exe";
+
+      // التحقق من وجود الملف أولاً
+      if (!fs.existsSync(ffmpegPath)) {
+        console.log("❌ FFmpeg غير موجود في المسار المحدد:", ffmpegPath);
+        resolve(false);
+        return;
+      }
+
+      testCommand = `"${ffmpegPath}" -version`;
+    } else {
+      // Linux/Unix أو Windows بدون مسار محدد - استخدام PATH
+      testCommand = "ffmpeg -version";
+    }
+
+    // اختبار تشغيل FFmpeg
+    exec(testCommand, (error) => {
+      if (error) {
+        console.log(
+          "❌ FFmpeg غير متاح على النظام - خطأ في التشغيل:",
+          error.message
+        );
+        console.log("💡 تأكد من تثبيت FFmpeg على السيرفر باستخدام:");
+        console.log(
+          "   Ubuntu/Debian: sudo apt update && sudo apt install ffmpeg"
+        );
+        console.log("   CentOS/RHEL: sudo yum install ffmpeg");
+        console.log("   Alpine: apk add ffmpeg");
+        resolve(false);
+      } else {
+        console.log("✅ FFmpeg متاح على النظام");
+        resolve(true);
+      }
+    });
+  });
+};
+
+/**
  * دالة ضغط الفيديو باستخدام FFmpeg
  * @param {string} inputPath - مسار الفيديو الأصلي
  * @param {string} outputPath - مسار الفيديو المضغوط
@@ -284,10 +366,63 @@ const compressImage = async (inputPath, outputPath, format = "jpg") => {
  * @returns {Promise<Object>} - معلومات الفيديو المضغوط
  */
 const compressVideo = async (inputPath, outputPath, format = "mp4") => {
+  console.log(`=== بدء ضغط الفيديو ===`);
+  console.log(`المسار الأصلي: ${inputPath}`);
+  console.log(`مسار الضغط: ${outputPath}`);
+  console.log(`التنسيق: ${format}`);
+
+  // التحقق من وجود FFmpeg أولاً
+  const isFFmpegAvailable = await checkFFmpegAvailability();
+
+  if (!isFFmpegAvailable) {
+    console.error("🚨 ===== تحذير مهم: FFmpeg غير متاح ===== 🚨");
+    console.error("❌ خطأ: FFmpeg غير مثبت على النظام");
+    console.error("🌍 نظام التشغيل:", os.platform());
+    console.error("📁 مجلد العمل:", process.cwd());
+    console.error("");
+    console.error("💡 لحل هذه المشكلة على السيرفر:");
+    console.error("   Ubuntu/Debian: sudo apt update && sudo apt install ffmpeg");
+    console.error("   CentOS/RHEL: sudo yum install epel-release && sudo yum install ffmpeg");
+    console.error("   Alpine: apk add ffmpeg");
+    console.error("");
+    console.error("🔍 للتحقق من التثبيت: ffmpeg -version");
+    console.error("================================================");
+
+    // إرجاع الملف الأصلي بدون ضغط مع رسالة تحذيرية
+    const originalStats = fs.statSync(inputPath);
+    const originalSize = originalStats.size;
+    const originalSizeMB = (originalSize / (1024 * 1024)).toFixed(2);
+
+    console.warn(`⚠️ سيتم حفظ الفيديو بدون ضغط (${originalSizeMB} MB)`);
+
+    // نسخ الملف إلى المسار الجديد بدلاً من الضغط
+    fs.copyFileSync(inputPath, outputPath);
+
+    // حذف الملف الأصلي
+    fs.unlinkSync(inputPath);
+
+    return {
+      success: true,
+      originalSize,
+      compressedSize: originalSize,
+      compressionRatio: "0%",
+      processingTime: "0ms",
+      outputPath,
+      warning: `FFmpeg غير متاح - تم حفظ الفيديو بدون ضغط (${originalSizeMB} MB)`,
+      ffmpegMissing: true,
+      systemInfo: {
+        platform: os.platform(),
+        workingDirectory: process.cwd()
+      }
+    };
+  }
+
   return new Promise((resolve, reject) => {
     const startTime = Date.now();
     const originalStats = fs.statSync(inputPath);
     const originalSize = originalStats.size;
+
+    console.log(`الحجم الأصلي: ${originalSize} بايت`);
 
     // إعدادات الضغط حسب نوع الفيديو
     let compressionOptions = {};
@@ -303,62 +438,95 @@ const compressVideo = async (inputPath, outputPath, format = "mp4") => {
         compressionOptions = VIDEO_COMPRESSION_SETTINGS.h264;
     }
 
-    // إعداد FFmpeg
-    let command = ffmpeg(inputPath).outputOptions([
-      `-c:v ${compressionOptions.codec}`,
-      `-preset ${compressionOptions.preset}`,
-      `-crf ${compressionOptions.crf}`,
-      `-maxrate ${compressionOptions.maxrate}`,
-      `-bufsize ${compressionOptions.bufsize}`,
-      `-c:a ${VIDEO_COMPRESSION_SETTINGS.audio.codec}`,
-      `-b:a ${VIDEO_COMPRESSION_SETTINGS.audio.bitrate}`,
-      "-movflags +faststart", // تحسين التحميل
-    ]);
+    console.log("إعدادات الضغط:", compressionOptions);
 
-    // إضافة خيارات الحجم إذا كان الفيديو كبير جداً
-    command = command.videoFilters([
-      `scale=w='if(gt(iw,${VIDEO_COMPRESSION_SETTINGS.resize.maxWidth}),${VIDEO_COMPRESSION_SETTINGS.resize.maxWidth},iw)':h='if(gt(ih,${VIDEO_COMPRESSION_SETTINGS.resize.maxHeight}),${VIDEO_COMPRESSION_SETTINGS.resize.maxHeight},ih)'`,
-    ]);
+    try {
+      // إعداد FFmpeg
+      let command = ffmpeg(inputPath).outputOptions([
+        `-c:v ${compressionOptions.codec}`,
+        `-preset ${compressionOptions.preset}`,
+        `-crf ${compressionOptions.crf}`,
+        `-maxrate ${compressionOptions.maxrate}`,
+        `-bufsize ${compressionOptions.bufsize}`,
+        `-c:a ${VIDEO_COMPRESSION_SETTINGS.audio.codec}`,
+        `-b:a ${VIDEO_COMPRESSION_SETTINGS.audio.bitrate}`,
+        "-movflags +faststart", // تحسين التحميل
+      ]);
 
-    // معالجة الأحداث
-    command
-      .on("end", () => {
-        try {
-          const compressedStats = fs.statSync(outputPath);
-          const compressedSize = compressedStats.size;
-          const compressionRatio = (
-            ((originalSize - compressedSize) / originalSize) *
-            100
-          ).toFixed(2);
+      // إضافة خيارات الحجم إذا كان الفيديو كبير جداً
+      command = command.videoFilters([
+        `scale=w='if(gt(iw,${VIDEO_COMPRESSION_SETTINGS.resize.maxWidth}),${VIDEO_COMPRESSION_SETTINGS.resize.maxWidth},iw)':h='if(gt(ih,${VIDEO_COMPRESSION_SETTINGS.resize.maxHeight}),${VIDEO_COMPRESSION_SETTINGS.resize.maxHeight},ih)'`,
+      ]);
 
-          // حذف الملف الأصلي
-          fs.unlinkSync(inputPath);
+      console.log("بدء عملية الضغط باستخدام FFmpeg...");
 
-          resolve({
-            success: true,
-            originalSize,
-            compressedSize,
-            compressionRatio: `${compressionRatio}%`,
-            processingTime: `${Date.now() - startTime}ms`,
-            outputPath,
-          });
-        } catch (error) {
+      // معالجة الأحداث
+      command
+        .on("start", (commandLine) => {
+          console.log("أمر FFmpeg:", commandLine);
+        })
+        .on("end", () => {
+          try {
+            console.log("اكتملت عملية الضغط");
+            const compressedStats = fs.statSync(outputPath);
+            const compressedSize = compressedStats.size;
+            const compressionRatio = (
+              ((originalSize - compressedSize) / originalSize) *
+              100
+            ).toFixed(2);
+
+            console.log(`الحجم بعد الضغط: ${compressedSize} بايت`);
+            console.log(`نسبة الضغط: ${compressionRatio}%`);
+            console.log(`وقت المعالجة: ${Date.now() - startTime}ms`);
+
+            // حذف الملف الأصلي
+            console.log(`حذف الملف الأصلي: ${inputPath}`);
+            fs.unlinkSync(inputPath);
+            console.log("تم حذف الملف الأصلي");
+
+            const result = {
+              success: true,
+              originalSize,
+              compressedSize,
+              compressionRatio: `${compressionRatio}%`,
+              processingTime: `${Date.now() - startTime}ms`,
+              outputPath,
+            };
+
+            console.log("نتيجة الضغط:", result);
+            console.log(`=== انتهاء ضغط الفيديو ===`);
+
+            resolve(result);
+          } catch (error) {
+            console.error("خطأ في معالجة نتيجة الضغط:", error);
+            reject({
+              success: false,
+              error: error.message,
+            });
+          }
+        })
+        .on("error", (error) => {
+          console.error("خطأ في FFmpeg:", error);
           reject({
             success: false,
             error: error.message,
+            ffmpegError: true,
           });
-        }
-      })
-      .on("error", (error) => {
-        reject({
-          success: false,
-          error: error.message,
-        });
-      })
-      .on("progress", (progress) => {
-        console.log(`Processing: ${progress.percent}% done`);
-      })
-      .save(outputPath);
+        })
+        .on("progress", (progress) => {
+          if (progress.percent) {
+            console.log(`تقدم المعالجة: ${Math.round(progress.percent)}%`);
+          }
+        })
+        .save(outputPath);
+    } catch (error) {
+      console.error("خطأ في إعداد FFmpeg:", error);
+      reject({
+        success: false,
+        error: error.message,
+        setupError: true,
+      });
+    }
   });
 };
 
@@ -956,6 +1124,7 @@ const deleteMultipleFiles = async (
         result = await deleteFileFromUrl(fileIdentifier, basePath);
       } else {
         // إذا كان اسم ملف فقط، تحديد نوع الملف وحذفه
+        // Fix: Correctly identify webp files (they have .webp extension, not .webm)
         const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(fileIdentifier);
         const fileType = isImage ? "images" : "videos";
 
@@ -1748,6 +1917,11 @@ const createPostUploader = () => {
   return multer({ storage: postStorage, fileFilter: fileFilter, limits });
 };
 
+const createEmergencyServiceUploader = () => {
+  const postStorage = createCustomStorage("emergency-services");
+  return multer({ storage: postStorage, fileFilter: fileFilter, limits });
+};
+
 // إنشاء multer مخصص للستوري (Stories)
 const createStoryUploader = () => {
   const storyStorage = createCustomStorage("stories");
@@ -1762,13 +1936,21 @@ const uploadPostMixed = postUploader.fields([
 ]);
 
 // دوال رفع مخصصة للستوري: حتى 5 عناصر مختلطة (صور/فيديو)
+// Limits for story media
+const STORY_LIMITS = { MAX_IMAGES: 5, MAX_VIDEOS: 5, MAX_TOTAL: 5 };
+
 const storyUploader = createStoryUploader();
 const uploadStoryMixed = storyUploader.fields([
-  { name: "images", maxCount: 5 },
-  { name: "videos", maxCount: 5 },
+  { name: "images", maxCount: STORY_LIMITS.MAX_IMAGES },
+  { name: "videos", maxCount: STORY_LIMITS.MAX_VIDEOS },
 ]);
 
-// دالة رفع وسائط البوست مع الضغط وبناء req.dbFiles
+const emergencyServiceUploader = createEmergencyServiceUploader();
+const uploadEmergencyServiceMixed = emergencyServiceUploader.fields([
+  { name: "images", maxCount: 1 },
+  { name: "image", maxCount: 1 }
+]);
+
 const uploadPostMediaWithCompression = async (
   req,
   res,
@@ -1815,14 +1997,317 @@ const uploadStoryMediaWithCompression = async (
       map.images = req.files.images.map(extract);
     }
     if (req.files && req.files.videos) {
-      map.videos = req.files.videos.map(extract);
+      map.videos = req.files.videos.map(extract); // 0..1
     }
-    // تأكد ألا يزيد المجموع عن 5 عناصر
-    const total = map.images.length + map.videos.length;
-    if (total > 5) {
-      map.images = map.images.slice(0, 5);
-      map.videos = [];
+    req.dbFiles = map;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const uploadEmergencyServiceMediaWithCompression = async (
+  req,
+  res,
+  next,
+  compress = true
+) => {
+  try {
+    await uploadAndCompress(req, res, uploadEmergencyServiceMixed, compress);
+    const extract = (f) =>
+      String(f?.dbFileName || f?.path || f?.filename || "")
+        .replace(/\\/g, "/")
+        .split("/")
+        .pop();
+    const map = { images: [] };
+    
+    // Handle both "images" and "image" field names
+    if (req.files && req.files.images) {
+      map.images = req.files.images.map(extract);
+    } else if (req.files && req.files.image) {
+      map.images = req.files.image.map(extract);
     }
+    
+    req.dbFiles = map;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+// إنشاء multer مخصص للمعارض (Exhibitions)
+const createExhibitionsUploader = () => {
+  const exhibitionsStorage = createCustomStorage("exhibitions");
+  return multer({ storage: exhibitionsStorage, fileFilter: fileFilter, limits });
+};
+
+// إنشاء multer مخصص للمهرجانات والأحداث (FestivalsEvents)
+const createFestivalsEventsUploader = () => {
+  const festivalsEventsStorage = createCustomStorage("festivals_events");
+  return multer({ storage: festivalsEventsStorage, fileFilter: fileFilter, limits });
+};
+
+// إنشاء multer مخصص لـ Explore
+const createExploreUploader = () => {
+  const exploreStorage = createCustomStorage("explore");
+  return multer({ storage: exploreStorage, fileFilter: fileFilter, limits });
+};
+
+// إنشاء multer مخصص لـ eVisa
+const createEVisaUploader = () => {
+  const eVisaStorage = createCustomStorage("eVisa");
+  return multer({ storage: eVisaStorage, fileFilter: fileFilter, limits });
+};
+
+// إنشاء multer مخصص لوسائل المواصلات العامة
+const createPublicTransportUploader = () => {
+  const publicTransportStorage = createCustomStorage("public_transport");
+  return multer({ storage: publicTransportStorage, fileFilter: fileFilter, limits });
+};
+// دوال رفع مخصصة للكافتيريا
+const createCafeteriaUploader = () => {
+    const cafeteriaStorage = createCustomStorage('cafeterias');
+    return multer({
+        storage: cafeteriaStorage,
+        fileFilter: fileFilter,
+        limits: limits
+    });
+};
+// دوال رفع مخصصة للمطاعم
+const createRestaurantUploader = () => {
+    const restaurantStorage = createCustomStorage('restaurants');
+    return multer({
+        storage: restaurantStorage,
+        fileFilter: fileFilter,
+        limits: limits
+    });
+};
+
+// دوال رفع مخصصة للمعارض
+const exhibitionsUploader = createExhibitionsUploader();
+const uploadExhibitionsMixed = exhibitionsUploader.fields([
+  { name: "images", maxCount: 10 },
+  { name: "image", maxCount: 1 },
+  { name: "videos", maxCount: 5 }
+]);
+
+// دوال رفع مخصصة للمهرجانات والأحداث
+const festivalsEventsUploader = createFestivalsEventsUploader();
+const uploadFestivalsEventsMixed = festivalsEventsUploader.fields([
+  { name: "images", maxCount: 10 },
+  { name: "image", maxCount: 1 },
+  { name: "videos", maxCount: 5 }
+]);
+
+// دوال رفع مخصصة لـ Explore
+const exploreUploader = createExploreUploader();
+const uploadExploreMixed = exploreUploader.fields([
+  { name: "images", maxCount: 10 },
+  { name: "image", maxCount: 1 },
+  { name: "videos", maxCount: 5 }
+]);
+
+// دوال رفع مخصصة لـ eVisa
+const eVisaUploader = createEVisaUploader();
+const uploadEVisaMixed = eVisaUploader.fields([
+  { name: "passportCopy", maxCount: 1 },
+  { name: "personalPhoto", maxCount: 1 },
+  { name: "hotelBooking", maxCount: 1 },
+  { name: "travelInsurance", maxCount: 1 }
+]);
+const cafeteriaUploader = createCafeteriaUploader();
+const uploadCafeteriaImage = cafeteriaUploader.single('image');
+const uploadCafeteriaImages = cafeteriaUploader.array('images', 10);
+const uploadCafeteriaMixed = cafeteriaUploader.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+]);
+// دوال رفع مخصصة لوسائل المواصلات العامة
+const publicTransportUploader = createPublicTransportUploader();
+const uploadPublicTransportMixed = publicTransportUploader.fields([
+  { name: "images", maxCount: 10 },
+  { name: "image", maxCount: 1 },
+  { name: "videos", maxCount: 5 }
+]);
+const restaurantUploader = createRestaurantUploader();
+const uploadRestaurantImage = restaurantUploader.single('image');
+const uploadRestaurantImages = restaurantUploader.array('images', 10);
+const uploadRestaurantMixed = restaurantUploader.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+]);
+// دالة رفع وسائط المعارض مع الضغط وبناء req.dbFiles
+const uploadExhibitionsImagesWithCompression = async (
+  req,
+  res,
+  next,
+  compress = true
+) => {
+  try {
+    await uploadAndCompress(req, res, uploadExhibitionsMixed, compress);
+    const extract = (f) =>
+      String(f?.dbFileName || f?.path || f?.filename || "")
+        .replace(/\\/g, "/")
+        .split("/")
+        .pop();
+    const map = { images: [], image: [], videos: [] };
+    
+    if (req.files) {
+      if (req.files.images) {
+        map.images = req.files.images.map(extract);
+      }
+      if (req.files.image) {
+        map.image = req.files.image.map(extract);
+      }
+      if (req.files.videos) {
+        map.videos = req.files.videos.map(extract);
+      }
+    }
+    
+    req.dbFiles = map;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+// دالة رفع وسائط Explore مع الضغط وبناء req.dbFiles
+const uploadExploreImageWithCompression = async (
+  req,
+  res,
+  next,
+  compress = true
+) => {
+  try {
+    await uploadAndCompress(req, res, uploadExploreMixed, compress);
+    const extract = (f) =>
+      String(f?.dbFileName || f?.path || f?.filename || "")
+        .replace(/\\/g, "/")
+        .split("/")
+        .pop();
+    const map = { images: [], image: [], videos: [] };
+    
+    if (req.files) {
+      if (req.files.images) {
+        map.images = req.files.images.map(extract);
+      }
+      if (req.files.image) {
+        map.image = req.files.image.map(extract);
+      }
+      if (req.files.videos) {
+        map.videos = req.files.videos.map(extract);
+      }
+    }
+    
+    req.dbFiles = map;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+// دالة رفع وسائط eVisa مع بناء req.dbFiles
+const uploadEVisaFilesWithCompression = async (
+  req,
+  res,
+  next,
+  compress = true
+) => {
+  try {
+    await uploadAndCompress(req, res, uploadEVisaMixed, compress);
+    const extract = (f) =>
+      String(f?.dbFileName || f?.path || f?.filename || "")
+        .replace(/\\/g, "/")
+        .split("/")
+        .pop();
+    const map = {};
+    
+    // Process each eVisa file field
+    if (req.files) {
+      if (req.files.passportCopy) {
+        map.passportCopy = req.files.passportCopy.map(extract);
+      }
+      if (req.files.personalPhoto) {
+        map.personalPhoto = req.files.personalPhoto.map(extract);
+      }
+      if (req.files.hotelBooking) {
+        map.hotelBooking = req.files.hotelBooking.map(extract);
+      }
+      if (req.files.travelInsurance) {
+        map.travelInsurance = req.files.travelInsurance.map(extract);
+      }
+    }
+    
+    req.dbFiles = map;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+// دالة رفع وسائط وسائل المواصلات العامة مع الضغط وبناء req.dbFiles
+const uploadPublicTransportImageWithCompression = async (
+  req,
+  res,
+  next,
+  compress = true
+) => {
+  try {
+    await uploadAndCompress(req, res, uploadPublicTransportMixed, compress);
+    const extract = (f) =>
+      String(f?.dbFileName || f?.path || f?.filename || "")
+        .replace(/\\/g, "/")
+        .split("/")
+        .pop();
+    const map = { images: [], image: [], videos: [] };
+    
+    if (req.files) {
+      if (req.files.images) {
+        map.images = req.files.images.map(extract);
+      }
+      if (req.files.image) {
+        map.image = req.files.image.map(extract);
+      }
+      if (req.files.videos) {
+        map.videos = req.files.videos.map(extract);
+      }
+    }
+    
+    req.dbFiles = map;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+// دالة رفع وسائط المهرجانات والأحداث مع الضغط وبناء req.dbFiles
+const uploadFestivalsEventsImagesWithCompression = async (
+  req,
+  res,
+  next,
+  compress = true
+) => {
+  try {
+    await uploadAndCompress(req, res, uploadFestivalsEventsMixed, compress);
+    const extract = (f) =>
+      String(f?.dbFileName || f?.path || f?.filename || "")
+        .replace(/\\/g, "/")
+        .split("/")
+        .pop();
+    const map = { images: [], image: [], videos: [] };
+    
+    if (req.files) {
+      if (req.files.images) {
+        map.images = req.files.images.map(extract);
+      }
+      if (req.files.image) {
+        map.image = req.files.image.map(extract);
+      }
+      if (req.files.videos) {
+        map.videos = req.files.videos.map(extract);
+      }
+    }
+    
     req.dbFiles = map;
     next();
   } catch (error) {
@@ -1936,6 +2421,132 @@ const uploadUserImageWithCompression = async (
   }
 };
 
+// دالة لإنشاء multer مخصص للمرشدين السياحيين (Tour Guides)
+const createTourGuideUploader = () => {
+  const tourGuideStorage = createCustomStorage("tourGuides");
+  return multer({ storage: tourGuideStorage, fileFilter: fileFilter, limits });
+};
+
+// دالة لإنشاء multer مخصص للتجارب (Experiences)
+const createExperienceUploader = () => {
+  const experienceStorage = createCustomStorage("experiences");
+  return multer({ storage: experienceStorage, fileFilter: fileFilter, limits });
+};
+
+// دوال رفع مخصصة للمرشدين السياحيين
+const tourGuideUploader = createTourGuideUploader();
+const uploadTourGuideImage = tourGuideUploader.single("image");
+
+// دوال رفع مخصصة للتجارب
+const experienceUploader = createExperienceUploader();
+const uploadExperienceImages = experienceUploader.fields([
+  { name: "images", maxCount: 10 },
+  { name: "image", maxCount: 1 }
+]);
+
+// دالة رفع صورة المرشد السياحي مع الضغط وبناء req.dbFiles
+const uploadTourGuideImageWithCompression = async (
+  req,
+  res,
+  next,
+  compress = true
+) => {
+  try {
+    await uploadAndCompress(req, res, uploadTourGuideImage, compress);
+    const extract = (f) =>
+      String(f?.dbFileName || f?.path || f?.filename || "")
+        .replace(/\\/g, "/")
+        .split("/")
+        .pop();
+    const map = { image: [] };
+    if (req.file) {
+      map.image = [extract(req.file)];
+    }
+    req.dbFiles = map;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+// دالة رفع صور التجربة مع الضغط وبناء req.dbFiles
+const uploadExperienceImagesWithCompression = async (
+  req,
+  res,
+  next,
+  compress = true
+) => {
+  try {
+    await uploadAndCompress(req, res, uploadExperienceImages, compress);
+    const extract = (f) =>
+      String(f?.dbFileName || f?.path || f?.filename || "")
+        .replace(/\\/g, "/")
+        .split("/")
+        .pop();
+    const map = { images: [], image: [] };
+    if (req.files) {
+      if (req.files.images) {
+        map.images = req.files.images.map(extract);
+      }
+      if (req.files.image) {
+        map.image = req.files.image.map(extract);
+      }
+    }
+    req.dbFiles = map;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+/**
+ * دالة رفع صورة كافتيريا مع ضغط تلقائي
+ * @param {Object} req - كائن الطلب
+ * @param {Object} res - كائن الاستجابة
+ * @param {Function} next - دالة الانتقال للمعالج التالي
+ * @param {boolean} compress - هل يتم ضغط الصور بعد الرفع؟
+ */
+const uploadCafeteriaImagesWithCompression = async (req, res, next, compress = true) => {
+    try {
+        await uploadAndCompress(req, res, uploadCafeteriaMixed, compress);
+        // بناء قائمة أسماء الملفات النهائية للاستخدام في الكنترولر
+        const extract = (f) => String(f?.dbFileName || f?.path || f?.filename || '')
+            .replace(/\\/g, '/')
+            .split('/')
+            .pop();
+        const map = {};
+        if (req.files && !Array.isArray(req.files)) {
+            for (const fieldName in req.files) {
+                map[fieldName] = req.files[fieldName].map(extract);
+            }
+        }
+        req.dbFiles = map;
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
+
+const uploadRestaurantImagesWithCompression = async (req, res, next, compress = true) => {
+    try {
+        await uploadAndCompress(req, res, uploadRestaurantMixed, compress);
+        // بناء قائمة أسماء الملفات النهائية للاستخدام في الكنترولر
+        const extract = (f) => String(f?.dbFileName || f?.path || f?.filename || '')
+            .replace(/\\/g, '/')
+            .split('/')
+            .pop();
+        const map = {};
+        if (req.files && !Array.isArray(req.files)) {
+            for (const fieldName in req.files) {
+                map[fieldName] = req.files[fieldName].map(extract);
+            }
+        }
+        req.dbFiles = map;
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
+
 // تنزيل صورة من URL وتخزينها في uploads مع خيار الضغط
 //google + facebook
 async function downloadImageFromUrlToUploads(imageUrl, options = {}) {
@@ -2023,9 +2634,46 @@ module.exports = {
   uploadUserImage,
   uploadUserImageWithCompression,
 
+  // دوال رفع مخصصة للمرشدين السياحيين
+  uploadTourGuideImage,
+  uploadTourGuideImageWithCompression,
+
+  // دوال رفع مخصصة للتجارب
+  uploadExperienceImages,
+  uploadExperienceImagesWithCompression,
+
   // دوال رفع مخصصة للبوستات والستوري
   uploadPostMediaWithCompression,
   uploadStoryMediaWithCompression,
+  uploadEmergencyServiceMediaWithCompression,
+
+  // دوال رفع مخصصة للمعارض
+  uploadExhibitionsMixed,
+  uploadExhibitionsImagesWithCompression,
+
+  uploadExploreMixed,
+  uploadExploreImageWithCompression,
+  uploadPublicTransportMixed,
+  uploadPublicTransportImageWithCompression,
+
+  // دوال رفع مخصصة للمهرجانات والأحداث
+  uploadFestivalsEventsMixed,
+  uploadFestivalsEventsImagesWithCompression,
+  // دوال رفع مخصصة للمطاعم
+  uploadRestaurantImage,
+  uploadRestaurantImages,
+  uploadRestaurantMixed,
+  uploadRestaurantImagesWithCompression,
+
+  // دوال رفع مخصصة للكافتيريا
+  uploadCafeteriaImage,
+  uploadCafeteriaImages,
+  uploadCafeteriaMixed,
+  uploadCafeteriaImagesWithCompression,
+
+  // دوال رفع مخصصة لـ eVisa
+  uploadEVisaMixed,
+  uploadEVisaFilesWithCompression,
 
   // دوال إنشاء uploaders مخصصة
   createCategoryUploader,
@@ -2035,11 +2683,15 @@ module.exports = {
   createStoryUploader,
   createCustomStorage,
   getUploadPath,
+  createTourGuideUploader,
+  createExperienceUploader,
+  createEVisaUploader,
 
   // دوال الضغط
   compressImage,
   compressVideo,
   compressFile,
+  checkFFmpegAvailability,
 
   // تنزيل الصورة من URL
   downloadImageFromUrlToUploads,
