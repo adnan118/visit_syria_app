@@ -2064,6 +2064,24 @@ const createPublicTransportUploader = () => {
   const publicTransportStorage = createCustomStorage("public_transport");
   return multer({ storage: publicTransportStorage, fileFilter: fileFilter, limits });
 };
+// دوال رفع مخصصة للكافتيريا
+const createCafeteriaUploader = () => {
+    const cafeteriaStorage = createCustomStorage('cafeterias');
+    return multer({
+        storage: cafeteriaStorage,
+        fileFilter: fileFilter,
+        limits: limits
+    });
+};
+// دوال رفع مخصصة للمطاعم
+const createRestaurantUploader = () => {
+    const restaurantStorage = createCustomStorage('restaurants');
+    return multer({
+        storage: restaurantStorage,
+        fileFilter: fileFilter,
+        limits: limits
+    });
+};
 
 // دوال رفع مخصصة للمعارض
 const exhibitionsUploader = createExhibitionsUploader();
@@ -2097,7 +2115,13 @@ const uploadEVisaMixed = eVisaUploader.fields([
   { name: "hotelBooking", maxCount: 1 },
   { name: "travelInsurance", maxCount: 1 }
 ]);
-
+const cafeteriaUploader = createCafeteriaUploader();
+const uploadCafeteriaImage = cafeteriaUploader.single('image');
+const uploadCafeteriaImages = cafeteriaUploader.array('images', 10);
+const uploadCafeteriaMixed = cafeteriaUploader.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+]);
 // دوال رفع مخصصة لوسائل المواصلات العامة
 const publicTransportUploader = createPublicTransportUploader();
 const uploadPublicTransportMixed = publicTransportUploader.fields([
@@ -2105,7 +2129,13 @@ const uploadPublicTransportMixed = publicTransportUploader.fields([
   { name: "image", maxCount: 1 },
   { name: "videos", maxCount: 5 }
 ]);
-
+const restaurantUploader = createRestaurantUploader();
+const uploadRestaurantImage = restaurantUploader.single('image');
+const uploadRestaurantImages = restaurantUploader.array('images', 10);
+const uploadRestaurantMixed = restaurantUploader.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+]);
 // دالة رفع وسائط المعارض مع الضغط وبناء req.dbFiles
 const uploadExhibitionsImagesWithCompression = async (
   req,
@@ -2468,6 +2498,54 @@ const uploadExperienceImagesWithCompression = async (
     next(error);
   }
 };
+/**
+ * دالة رفع صورة كافتيريا مع ضغط تلقائي
+ * @param {Object} req - كائن الطلب
+ * @param {Object} res - كائن الاستجابة
+ * @param {Function} next - دالة الانتقال للمعالج التالي
+ * @param {boolean} compress - هل يتم ضغط الصور بعد الرفع؟
+ */
+const uploadCafeteriaImagesWithCompression = async (req, res, next, compress = true) => {
+    try {
+        await uploadAndCompress(req, res, uploadCafeteriaMixed, compress);
+        // بناء قائمة أسماء الملفات النهائية للاستخدام في الكنترولر
+        const extract = (f) => String(f?.dbFileName || f?.path || f?.filename || '')
+            .replace(/\\/g, '/')
+            .split('/')
+            .pop();
+        const map = {};
+        if (req.files && !Array.isArray(req.files)) {
+            for (const fieldName in req.files) {
+                map[fieldName] = req.files[fieldName].map(extract);
+            }
+        }
+        req.dbFiles = map;
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
+
+const uploadRestaurantImagesWithCompression = async (req, res, next, compress = true) => {
+    try {
+        await uploadAndCompress(req, res, uploadRestaurantMixed, compress);
+        // بناء قائمة أسماء الملفات النهائية للاستخدام في الكنترولر
+        const extract = (f) => String(f?.dbFileName || f?.path || f?.filename || '')
+            .replace(/\\/g, '/')
+            .split('/')
+            .pop();
+        const map = {};
+        if (req.files && !Array.isArray(req.files)) {
+            for (const fieldName in req.files) {
+                map[fieldName] = req.files[fieldName].map(extract);
+            }
+        }
+        req.dbFiles = map;
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
 
 // تنزيل صورة من URL وتخزينها في uploads مع خيار الضغط
 //google + facebook
@@ -2581,6 +2659,17 @@ module.exports = {
   // دوال رفع مخصصة للمهرجانات والأحداث
   uploadFestivalsEventsMixed,
   uploadFestivalsEventsImagesWithCompression,
+  // دوال رفع مخصصة للمطاعم
+  uploadRestaurantImage,
+  uploadRestaurantImages,
+  uploadRestaurantMixed,
+  uploadRestaurantImagesWithCompression,
+
+  // دوال رفع مخصصة للكافتيريا
+  uploadCafeteriaImage,
+  uploadCafeteriaImages,
+  uploadCafeteriaMixed,
+  uploadCafeteriaImagesWithCompression,
 
   // دوال رفع مخصصة لـ eVisa
   uploadEVisaMixed,
