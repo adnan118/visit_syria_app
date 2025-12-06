@@ -40,6 +40,8 @@ const Experience = require('./experienceModel'); // استيراد نموذج ا
 const Explore = require('./exploreModel'); // استيراد نموذج Explore
 const EVisa = require('./eVisaModel'); // استيراد نموذج eVisa
 const VisaType = require('./visaTypeModel'); // استيراد نموذج نوع التأشيرة
+const Restaurant = require('./restaurantModel'); // استيراد نموذج المطعم
+const Cafeteria = require('./cafeteriaModel'); // استيراد نموذج الكافتيريا
 
 // تحديد العلاقات بين النماذج (تجنب تعريفها إذا كانت موجودة بالفعل)
 
@@ -342,6 +344,36 @@ if (!Explore.associations || !Explore.associations.city) {
   });
 }
 
+// العلاقة بين المدن والمطاعم
+if (!City.associations || !City.associations.restaurants) {
+  City.hasMany(Restaurant, {
+    foreignKey: 'city_id',
+    as: 'restaurants'
+  });
+}
+
+if (!Restaurant.associations || !Restaurant.associations.city) {
+  Restaurant.belongsTo(City, {
+    foreignKey: 'city_id',
+    as: 'city'
+  });
+}
+
+// العلاقة بين المدن والكافتيريا
+if (!City.associations || !City.associations.cafeterias) {
+  City.hasMany(Cafeteria, {
+    foreignKey: 'city_id',
+    as: 'cafeterias'
+  });
+}
+
+if (!Cafeteria.associations || !Cafeteria.associations.city) {
+  Cafeteria.belongsTo(City, {
+    foreignKey: 'city_id',
+    as: 'city'
+  });
+}
+
 // العلاقة بين eVisa وأنواع التأشيرات
 if (!EVisa.associations || !EVisa.associations.visaType) {
   EVisa.belongsTo(VisaType, {
@@ -380,5 +412,7 @@ module.exports = {
   Experience, // تصدير نموذج التجارب
   Explore, // تصدير نموذج Explore
   EVisa, // تصدير نموذج eVisa
-  VisaType // تصدير نموذج نوع التأشيرة
+  VisaType, // تصدير نموذج نوع التأشيرة
+  Restaurant, // تصدير نموذج المطعم
+  Cafeteria // تصدير نموذج الكافتيريا
 };
