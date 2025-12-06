@@ -15,10 +15,7 @@
 */
 
 // استيراد نموذج العرض
-const Offer = require('../../models/offerModel');
-
-// استيراد نموذج المدينة
-const City = require('../../models/cityModel');
+const { Offer, City } = require('../../models');
 
 // استيراد دوال مساعدة للوسائط
 const { handleUploadError } = require("../services/mediaHelper");
