@@ -13,12 +13,8 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      cityName_ar: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      cityName_en: {
-        type: Sequelize.STRING,
+      cityId: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       establishmentName_ar: {
@@ -97,8 +93,7 @@ module.exports = {
     });
 
     // Add indexes for better performance
-    await queryInterface.addIndex('offers', ['cityName_ar']);
-    await queryInterface.addIndex('offers', ['cityName_en']);
+    await queryInterface.addIndex('offers', ['cityId']);
     await queryInterface.addIndex('offers', ['establishmentType']);
     await queryInterface.addIndex('offers', ['createdAt']);
   },
