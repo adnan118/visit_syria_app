@@ -24,6 +24,7 @@ const adminVisaTypesRoutes = require("./visaTypes");
 const adminRestaurantsRoutes = require("./restaurants");
 const adminCafeteriasRoutes = require("./cafeterias");
 const adminArtsCultureRoutes = require("./artsCulture");
+const adminOffersRoutes = require("./offers");
 
 // استخدام مسارات إدارة المستخدمين
 router.use("/users", adminUsersRoutes);
@@ -69,5 +70,8 @@ router.use("/cafeterias", adminCafeteriasRoutes);
 
 // استخدام مسارات إدارة الفنون والثقافة
 router.use("/arts-culture", adminArtsCultureRoutes);
+
+// استخدام مسارات إدارة العروض
+router.use("/offers", adminOffersRoutes);
 
 module.exports = router;
