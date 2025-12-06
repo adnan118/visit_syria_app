@@ -124,6 +124,7 @@ const ownerContactRouter = require("./routes/users/ownerContact"); // استير
 const feedbackRouter = require("./routes/users/feedback"); // استيراد مسارات ملاحظات المستخدمين
 const visaTypesRouter = require("./routes/users/visaTypes"); // استيراد مسارات أنواع التأشيرات
 const eVisaRouter = require("./routes/eVisa"); // استيراد مسارات الطلبات الإلكترونية للتأشيرات
+const foodAndDrinksRouter = require("./routes/users/FoodAndDrinks"); // استيراد مسارات الطعام والشراب
 const { startStoryCleanupJobs } = require("./jobs/storyCleanup"); // استيراد وظيفة التنظيف
 
 // تسجيل مسار التوثيق أولاً قبل تطبيق JWT middleware
@@ -158,6 +159,7 @@ app.use(`${config.API}/owner-contact`, ownerContactRouter); // ربط مسارا
 app.use(`${config.API}/feedback`, feedbackRouter); // ربط مسارات ملاحظات المستخدمين
 app.use(`${config.API}/visa-types`, visaTypesRouter); // ربط مسارات أنواع التأشيرات
 app.use(`${config.API}/e-visa`, eVisaRouter); // ربط مسارات الطلبات الإلكترونية للتأشيرات
+app.use(`${config.API}/food-drinks`, foodAndDrinksRouter); // ربط مسارات الطعام والشراب
 // --------------------------------------------
 
 app.get("/", (req, res) => {
@@ -220,4 +222,4 @@ app.listen(config.PORT, config.HOST, () => {
   console.log(`Server is running at http://${config.HOST}:${config.PORT}`);
 });
 
- 
+//https://visitsyria.fun/api/v1
