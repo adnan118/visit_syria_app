@@ -23,6 +23,7 @@ const adminFeedbackRoutes = require("./feedback");
 const adminVisaTypesRoutes = require("./visaTypes");
 const adminRestaurantsRoutes = require("./restaurants");
 const adminCafeteriasRoutes = require("./cafeterias");
+const adminArtsCultureRoutes = require("./artsCulture");
 
 // استخدام مسارات إدارة المستخدمين
 router.use("/users", adminUsersRoutes);
@@ -65,5 +66,8 @@ router.use("/restaurants", adminRestaurantsRoutes);
 
 // استخدام مسارات إدارة الكافتيريا
 router.use("/cafeterias", adminCafeteriasRoutes);
+
+// استخدام مسارات إدارة الفنون والثقافة
+router.use("/arts-culture", adminArtsCultureRoutes);
 
 module.exports = router;
