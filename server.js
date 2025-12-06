@@ -126,6 +126,7 @@ const visaTypesRouter = require("./routes/users/visaTypes"); // استيراد �
 const eVisaRouter = require("./routes/eVisa"); // استيراد مسارات الطلبات الإلكترونية للتأشيرات
 const foodAndDrinksRouter = require("./routes/users/FoodAndDrinks"); // استيراد مسارات الطعام والشراب
 const artsCultureRouter = require("./routes/users/artsCulture"); // استيراد مسارات الفنون والثقافة
+const offersRouter = require("./routes/users/offers"); // استيراد مسارات العروض
 const { startStoryCleanupJobs } = require("./jobs/storyCleanup"); // استيراد وظيفة التنظيف
 
 // تسجيل مسار التوثيق أولاً قبل تطبيق JWT middleware
@@ -162,6 +163,7 @@ app.use(`${config.API}/visa-types`, visaTypesRouter); // ربط مسارات أ�
 app.use(`${config.API}/e-visa`, eVisaRouter); // ربط مسارات الطلبات الإلكترونية للتأشيرات
 app.use(`${config.API}/food-drinks`, foodAndDrinksRouter); // ربط مسارات الطعام والشراب
 app.use(`${config.API}/arts-culture`, artsCultureRouter); // ربط مسارات الفنون والثقافة
+app.use(`${config.API}/offers`, offersRouter); // ربط مسارات العروض
 // --------------------------------------------
 
 app.get("/", (req, res) => {
