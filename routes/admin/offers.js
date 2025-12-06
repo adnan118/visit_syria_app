@@ -17,20 +17,13 @@ const router = express.Router();
 // استيراد وحدة تحكم العروض
 const offersController = require("../../controllers/offers/offers");
 
-// استيراد وسيط JWT
-const { authJwt, requireAdmin } = require("../../middlewares/jwt");
-
+ 
 // استيراد دالة رفع صور العروض مع الضغط
 const {
   uploadOffersImagesWithCompression,
 } = require("../../controllers/services/mediaHelper");
 
-// تطبيق وسيط المصادقة على جميع مسارات إدارة العروض
-router.use(authJwt());
-router.use(requireAdmin());
-
-// ✅ مسارات العروض للمشرفين فقط
-
+ 
 // إنشاء عرض جديد (مع رفع صور)
 router.post("/", (req, res, next) => uploadOffersImagesWithCompression(req, res, next), offersController.createOffer);
 
