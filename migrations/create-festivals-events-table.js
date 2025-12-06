@@ -83,6 +83,26 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true
       },
+      classification: {
+        type: Sequelize.ENUM(
+          'art',
+          'history',
+          'science',
+          'culture',
+          'technology',
+          'literature',
+          'music',
+          'photography',
+          'crafts',
+          'food',
+          'fashion',
+          'nature',
+          'religion',
+          'sports',
+          'other'
+        ),
+        allowNull: true
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
