@@ -417,7 +417,6 @@ exports.updateCafeteria = async (req, res, next) => {
     }
 
 
-
     // 🔹 تحضير بيانات التحديث
     const updateData = {
       cityId: cityId || cafeteria.cityId,
