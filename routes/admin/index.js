@@ -21,6 +21,8 @@ const adminPublicTransportRoutes = require("./publicTransport");
 const adminOwnerContactRoutes = require("./ownerContact");
 const adminFeedbackRoutes = require("./feedback");
 const adminVisaTypesRoutes = require("./visaTypes");
+const adminRestaurantsRoutes = require("./restaurants");
+const adminCafeteriasRoutes = require("./cafeterias");
 
 // استخدام مسارات إدارة المستخدمين
 router.use("/users", adminUsersRoutes);
@@ -57,5 +59,11 @@ router.use("/feedback", adminFeedbackRoutes);
 
 // استخدام مسارات إدارة أنواع التأشيرات
 router.use("/visa-types", adminVisaTypesRoutes);
+
+// استخدام مسارات إدارة المطاعم
+router.use("/restaurants", adminRestaurantsRoutes);
+
+// استخدام مسارات إدارة الكافتيريا
+router.use("/cafeterias", adminCafeteriasRoutes);
 
 module.exports = router;
