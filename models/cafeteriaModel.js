@@ -72,6 +72,7 @@ const Cafeteria = sequelize.define('Cafeteria', {
       'Cafe',                      // مقهى
       'Entertainment Tent'         // خيمة ترفيه
     ),
+    field: 'cafeteria_type',       // Map to snake_case column in database
     allowNull: false
   },
 
@@ -85,6 +86,7 @@ const Cafeteria = sequelize.define('Cafeteria', {
       '12:00-24:00',               // من 12 ظهراً حتى 12 منتصف الليل
       '16:00-02:00'                // من 4 عصراً حتى 2 صباحاً
     ),
+    field: 'opening_hours',        // Map to snake_case column in database
     allowNull: false,
     defaultValue: '09:00-17:00'    // القيمة الافتراضية: من 9 صباحاً حتى 5 مساءً
   },
@@ -98,6 +100,7 @@ const Cafeteria = sequelize.define('Cafeteria', {
       'Monday to Friday',          // الاثنين إلى الجمعة
       'Custom Days'                // أيام مخصصة
     ),
+    field: 'working_days',         // Map to snake_case column in database
     allowNull: false,
     defaultValue: 'All Week'       // القيمة الافتراضية: كل أيام الأسبوع
   },
@@ -105,6 +108,7 @@ const Cafeteria = sequelize.define('Cafeteria', {
   // الصور (كصفيف من الروابط)
   images: {
     type: DataTypes.JSON,           // نوع الحقل: JSON
+    field: 'images',               // Column name in database
     allowNull: false,                // حقل مطلوب
     defaultValue: []               // القيمة الافتراضية: مصفوفة فارغة
   },
@@ -112,12 +116,14 @@ const Cafeteria = sequelize.define('Cafeteria', {
   // أرقام الهاتف
   phoneNumbers: {
     type: DataTypes.STRING,         // نوع الحقل: نص قصير
+    field: 'phone_numbers',        // Map to snake_case column in database
     allowNull: false                // حقل مطلوب
   },
 
   // روابط التواصل الاجتماعي
   socialLinks: {
     type: DataTypes.JSON,           // نوع الحقل: JSON
+    field: 'social_links',         // Map to snake_case column in database
     allowNull: true,                // حقل اختياري
     defaultValue: {}               // القيمة الافتراضية: كائن فارغ
   },
@@ -125,24 +131,28 @@ const Cafeteria = sequelize.define('Cafeteria', {
   // نقطة الطول
   latitude: {
     type: DataTypes.DECIMAL(10, 8), // نوع الحقل: رقم عشري
+    field: 'latitude',             // Column name in database
     allowNull: true                // حقل اختياري
   },
 
   // نقطة العرض
   longitude: {
     type: DataTypes.DECIMAL(11, 8), // نوع الحقل: رقم عشري
+    field: 'longitude',            // Column name in database
     allowNull: true                // حقل اختياري
   },
 
   // تاريخ الإنشاء
   createdAt: {
     type: DataTypes.DATE,
+    field: 'created_at',          // Map to snake_case column in database
     defaultValue: DataTypes.NOW    // القيمة الافتراضية: الوقت الحالي
   },
 
   // تاريخ آخر تحديث
   updatedAt: {
     type: DataTypes.DATE,
+    field: 'updated_at',          // Map to snake_case column in database
     defaultValue: DataTypes.NOW
   }
 
