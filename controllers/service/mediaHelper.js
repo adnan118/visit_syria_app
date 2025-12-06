@@ -2139,6 +2139,28 @@ const uploadArtsCultureMixed = artsCultureUploader.fields([
     { name: 'image', maxCount: 1 },
     { name: 'images', maxCount: 10 }
 ]);
+
+// دوال رفع مخصصة للعروض
+const createOffersUploader = () => {
+    const offersStorage = createCustomStorage('offers');
+    return multer({
+        storage: offersStorage,
+        fileFilter: fileFilter,
+        limits: limits
+    });
+};
+
+const offersUploader = createOffersUploader();
+const uploadOffersImage = offersUploader.single('image');
+const uploadOffersImages = offersUploader.array('images', 10);
+const uploadOffersMixed = offersUploader.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 10 },
+    { name: 'photos', maxCount: 10 },
+    { name: 'photo', maxCount: 1 },
+    { name: 'videos', maxCount: 5 },
+    { name: 'video', maxCount: 1 }
+]);
 // دوال رفع مخصصة لوسائل المواصلات العامة
 const publicTransportUploader = createPublicTransportUploader();
 const uploadPublicTransportMixed = publicTransportUploader.fields([
@@ -2564,6 +2586,28 @@ const uploadArtsCultureImageWithCompression = async (req, res, next, compress = 
     }
 };
 
+// دالة رفع وسائط العروض مع الضغط وبناء req.dbFiles
+const uploadOffersImagesWithCompression = async (req, res, next, compress = true) => {
+    try {
+        await uploadAndCompress(req, res, uploadOffersMixed, compress);
+        // بناء قائمة أسماء الملفات النهائية للاستخدام في الكنترولر
+        const extract = (f) => String(f?.dbFileName || f?.path || f?.filename || '')
+            .replace(/\\/g, '/')
+            .split('/')
+            .pop();
+        const map = {};
+        if (req.files && !Array.isArray(req.files)) {
+            for (const fieldName in req.files) {
+                map[fieldName] = req.files[fieldName].map(extract);
+            }
+        }
+        req.dbFiles = map;
+        next();
+    } catch (error) {
+        next(error);
+    }
+};
+
 const uploadRestaurantImagesWithCompression = async (req, res, next, compress = true) => {
     try {
         await uploadAndCompress(req, res, uploadRestaurantMixed, compress);
@@ -2714,6 +2758,12 @@ module.exports = {
   uploadArtsCultureImages,
   uploadArtsCultureMixed,
   uploadArtsCultureImageWithCompression,
+  
+  // دوال رفع مخصصة للعروض
+  uploadOffersImage,
+  uploadOffersImages,
+  uploadOffersMixed,
+  uploadOffersImagesWithCompression,
 
   // دوال رفع مخصصة لـ eVisa
   uploadEVisaMixed,
@@ -2732,6 +2782,9 @@ module.exports = {
   createEVisaUploader,
   // دوال إنشاء uploaders مخصصة للفنون والثقافة
   createArtsCultureUploader,
+  
+  // دوال إنشاء uploaders مخصصة للعروض
+  createOffersUploader,
 
   // دوال الضغط
   compressImage,
