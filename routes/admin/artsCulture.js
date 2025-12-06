@@ -17,18 +17,13 @@ const router = express.Router();
 // استيراد وحدة تحكم الفنون والثقافة
 const artsCultureController = require("../../controllers/ExploreSyria/artsCultureController");
 
-// استيراد وسيط JWT
-const { authJwt, requireAdmin } = require("../../middlewares/jwt");
-
+ 
 // استيراد دالة رفع صور الفنون والثقافة مع الضغط
 const {
   uploadArtsCultureImageWithCompression,
 } = require("../../controllers/services/mediaHelper");
 
-// تطبيق وسيط المصادقة على جميع مسارات إدارة الفنون والثقافة
-// router.use(authJwt()); // This is already applied in AdminRoutes.js
-router.use(requireAdmin());
-
+ 
 // ✅ مسارات الفنون والثقافة للمشرفين فقط
 
 // إنشاء سجل جديد (مع رفع صورة)
