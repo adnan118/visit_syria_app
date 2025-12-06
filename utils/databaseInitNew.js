@@ -104,7 +104,16 @@ async function checkDatabaseHealth() {
       'cities', // إضافة جدول cities
       'emergency_services', // إضافة جدول emergency_services
       'exhibitions', // إضافة جدول exhibitions
-      'festivals_events' // إضافة جدول festivals_events
+      'festivals_events', // إضافة جدول festivals_events
+      'trips', // إضافة جدول trips
+      'explore', // إضافة جدول explore
+      'public_transport', // إضافة جدول public_transport
+      'owner_contact', // إضافة جدول owner_contact
+      'feedback', // إضافة جدول feedback
+      'visa_types', // إضافة جدول visa_types
+      'e_visa_applications', // إضافة جدول e_visa_applications
+      'restaurants', // إضافة جدول restaurants
+      'cafeterias' // إضافة جدول cafeterias
     ];
     
     console.log('Required tables:', requiredTables);
@@ -152,7 +161,15 @@ async function verifyTableCreation() {
       'emergency_services', // إضافة جدول emergency_services
       'exhibitions', // إضافة جدول exhibitions
       'festivals_events', // إضافة جدول festivals_events
-      'trips' // إضافة جدول trips
+      'trips', // إضافة جدول trips
+      'explore', // إضافة جدول explore
+      'public_transport', // إضافة جدول public_transport
+      'owner_contact', // إضافة جدول owner_contact
+      'feedback', // إضافة جدول feedback
+      'visa_types', // إضافة جدول visa_types
+      'e_visa_applications', // إضافة جدول e_visa_applications
+      'restaurants', // إضافة جدول restaurants
+      'cafeterias' // إضافة جدول cafeterias
     ];
     
     const queryInterface = sequelize.getQueryInterface();
