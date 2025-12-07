@@ -116,17 +116,31 @@ const Offer = sequelize.define('Offer', {
     allowNull: true                // حقل اختياري
   },
 
-  // معرف المنشأة (يمكن أن يكون مطعماً أو فندقاً أو غير ذلك)
-  establishmentId: {
-    type: DataTypes.INTEGER,        // نوع الحقل: عدد صحيح
-    allowNull: true                // حقل اختياري الآن
-  },
-
   // تصنيف المنشأة (enum)
   establishmentType: {
     type: DataTypes.ENUM(           // نوع الحقل: قائمة من القيم المحددة
       'Restaurant',                 // مطعم
       'Cafeteria',                  // كافتيريا
+      'Hotel',                      // فندق
+      'Tourist Attraction',         // معلم سياحي
+      'Museum',                     // متحف
+      'Historical Site',            // موقع تاريخي
+      'Beach Resort',               // منتجع شاطئي
+      'Mountain Resort',            // منتجع جبلي
+      'Cultural Center',            // مركز ثقافي
+      'Shopping Mall',              // مركز تسوق
+      'Park',                       // حديقة
+      'Zoo',                        // حديقة حيوان
+      'Amusement Park',             // مدينة ألعاب
+      'Spa & Wellness',             // سبا ورفاهية
+       
+      'Nightclub',                  // نادي ليلي
+   
+      'Cafe',                       // مقهى
+      'Fast Food',                  // طعام سريع
+      'Fine Dining',                // طعام فاخر
+      'Local Cuisine',              // مأكولات محلية
+      'Street Food',                // طعام شارعي
       'Other'                       // أخرى
     ),
     allowNull: false
@@ -162,6 +176,26 @@ const Offer = sequelize.define('Offer', {
       const translations = {
         'Restaurant': { en: 'Restaurant', ar: 'مطعم' },
         'Cafeteria': { en: 'Cafeteria', ar: 'كافتيريا' },
+        'Hotel': { en: 'Hotel', ar: 'فندق' },
+        'Tourist Attraction': { en: 'Tourist Attraction', ar: 'معلم سياحي' },
+        'Museum': { en: 'Museum', ar: 'متحف' },
+        'Historical Site': { en: 'Historical Site', ar: 'موقع تاريخي' },
+        'Beach Resort': { en: 'Beach Resort', ar: 'منتجع شاطئي' },
+        'Mountain Resort': { en: 'Mountain Resort', ar: 'منتجع جبلي' },
+        'Cultural Center': { en: 'Cultural Center', ar: 'مركز ثقافي' },
+        'Shopping Mall': { en: 'Shopping Mall', ar: 'مركز تسوق' },
+        'Park': { en: 'Park', ar: 'حديقة' },
+        'Zoo': { en: 'Zoo', ar: 'حديقة حيوان' },
+        'Amusement Park': { en: 'Amusement Park', ar: 'مدينة ألعاب' },
+        'Spa & Wellness': { en: 'Spa & Wellness', ar: 'سبا ورفاهية' },
+        
+        'Nightclub': { en: 'Nightclub', ar: 'نادي ليلي' },
+        
+        'Cafe': { en: 'Cafe', ar: 'مقهى' },
+        'Fast Food': { en: 'Fast Food', ar: 'طعام سريع' },
+        'Fine Dining': { en: 'Fine Dining', ar: 'طعام فاخر' },
+        'Local Cuisine': { en: 'Local Cuisine', ar: 'مأكولات محلية' },
+        'Street Food': { en: 'Street Food', ar: 'طعام شارعي' },
         'Other': { en: 'Other', ar: 'أخرى' }
       };
       
