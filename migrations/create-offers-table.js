@@ -70,14 +70,30 @@ module.exports = {
         type: Sequelize.DECIMAL(11, 8),
         allowNull: true
       },
-      establishmentId: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       establishmentType: {
         type: Sequelize.ENUM(
           'Restaurant',
           'Cafeteria',
+          'Hotel',
+          'Tourist Attraction',
+          'Museum',
+          'Historical Site',
+          'Beach Resort',
+          'Mountain Resort',
+          'Cultural Center',
+          'Shopping Mall',
+          'Park',
+          'Zoo',
+          'Amusement Park',
+          'Spa & Wellness',
+          
+          'Nightclub',
+          
+          'Cafe',
+          'Fast Food',
+          'Fine Dining',
+          'Local Cuisine',
+          'Street Food',
           'Other'
         ),
         allowNull: false
