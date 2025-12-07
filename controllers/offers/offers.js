@@ -71,7 +71,6 @@ exports.createOffer = async (req, res, next) => {
       description_en, 
       latitude, 
       longitude, 
-      establishmentId, 
       establishmentType
     } = req.body;
 
@@ -104,7 +103,14 @@ exports.createOffer = async (req, res, next) => {
     }
 
     // التحقق من نوع المنشأة
-    const validEstablishmentTypes = ['Restaurant', 'Cafeteria', 'Other'];
+    const validEstablishmentTypes = [
+      'Restaurant', 'Cafeteria', 'Hotel', 'Tourist Attraction', 
+      'Museum', 'Historical Site', 'Beach Resort', 'Mountain Resort', 
+      'Cultural Center', 'Shopping Mall', 'Park', 'Zoo', 
+      'Amusement Park', 'Spa & Wellness', 'Casino', 'Nightclub', 
+      'Bar', 'Cafe', 'Fast Food', 'Fine Dining', 
+      'Local Cuisine', 'Street Food', 'Other'
+    ];
     if (establishmentType && !validEstablishmentTypes.includes(establishmentType)) {
       const error = new Error(`Invalid establishment type. Valid types are: ${validEstablishmentTypes.join(', ')}`);
       error.status = 400;
@@ -153,7 +159,6 @@ exports.createOffer = async (req, res, next) => {
       images: uploadedImages, // استخدام الصور المرفوعة
       latitude: latitude ? parseFloat(latitude) : null,
       longitude: longitude ? parseFloat(longitude) : null,
-      establishmentId: establishmentId ? parseInt(establishmentId) : null, // يمكن أن يكون null
       establishmentType
     };
 
@@ -340,7 +345,6 @@ exports.updateOffer = async (req, res, next) => {
       description_en,
       latitude,
       longitude,
-      establishmentId,
       establishmentType
     } = req.body;
 
@@ -391,7 +395,6 @@ exports.updateOffer = async (req, res, next) => {
       description_en: description_en || offer.description_en,
       latitude: latitude ? parseFloat(latitude) : offer.latitude,
       longitude: longitude ? parseFloat(longitude) : offer.longitude,
-      establishmentId: establishmentId ? parseInt(establishmentId) : (establishmentId === null ? null : offer.establishmentId), // يمكن أن يكون null
       establishmentType: establishmentType || offer.establishmentType
     };
 
@@ -435,7 +438,14 @@ exports.updateOffer = async (req, res, next) => {
 
     // التحقق من نوع المنشأة إذا تم تحديثه
     if (establishmentType) {
-      const validEstablishmentTypes = ['Restaurant', 'Cafeteria', 'Other'];
+      const validEstablishmentTypes = [
+        'Restaurant', 'Cafeteria', 'Hotel', 'Tourist Attraction', 
+        'Museum', 'Historical Site', 'Beach Resort', 'Mountain Resort', 
+        'Cultural Center', 'Shopping Mall', 'Park', 'Zoo', 
+        'Amusement Park', 'Spa & Wellness', 'Casino', 'Nightclub', 
+        'Bar', 'Cafe', 'Fast Food', 'Fine Dining', 
+        'Local Cuisine', 'Street Food', 'Other'
+      ];
       if (!validEstablishmentTypes.includes(establishmentType)) {
         const error = new Error(`Invalid establishment type. Valid types are: ${validEstablishmentTypes.join(', ')}`);
         error.status = 400;
