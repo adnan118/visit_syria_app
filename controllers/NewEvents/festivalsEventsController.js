@@ -196,14 +196,39 @@ exports.getAllFestivalsEvents = async (req, res, next) => {
       offset
     });
 
+    // إضافة التصنيفات باللغتين العربية والإنجليزية إلى كل فعالية
+    const classificationLabels = {
+      'art': { ar: 'فنون', en: 'Art' },
+      'history': { ar: 'تاريخ', en: 'History' },
+      'science': { ar: 'علوم', en: 'Science' },
+      'culture': { ar: 'ثقافة', en: 'Culture' },
+      'technology': { ar: 'تكنولوجيا', en: 'Technology' },
+      'literature': { ar: 'أدب', en: 'Literature' },
+      'music': { ar: 'موسيقى', en: 'Music' },
+      'photography': { ar: 'تصوير', en: 'Photography' },
+      'crafts': { ar: 'حرفيات', en: 'Crafts' },
+      'food': { ar: 'طعام', en: 'Food' },
+      'fashion': { ar: 'أزياء', en: 'Fashion' },
+      'nature': { ar: 'طبيعة', en: 'Nature' },
+      'religion': { ar: 'دين', en: 'Religion' },
+      'sports': { ar: 'رياضة', en: 'Sports' },
+      'other': { ar: 'أخرى', en: 'Other' }
+    };
+
+    const festivalsEventsWithClassifications = festivalsEvents.map(event => {
+      const eventData = event.toJSON();
+      eventData.classification = classificationLabels[eventData.classification] || classificationLabels['other'];
+      return eventData;
+    });
+
     // حساب عدد الصفحات الإجمالي
     const totalPages = Math.ceil(count / limit);
 
     res.status(200).json({
       status: "success",
       message: "✅ All festivals and events retrieved successfully.",
-      count: festivalsEvents.length,
-      data: festivalsEvents,
+      count: festivalsEventsWithClassifications.length,
+      data: festivalsEventsWithClassifications,
       pagination: {
         currentPage: page,
         totalPages,
@@ -231,10 +256,32 @@ exports.getFestivalEventById = async (req, res, next) => {
       throw error;
     }
 
+    // إضافة التصنيفات باللغتين العربية والإنجليزية
+    const classificationLabels = {
+      'art': { ar: 'فنون', en: 'Art' },
+      'history': { ar: 'تاريخ', en: 'History' },
+      'science': { ar: 'علوم', en: 'Science' },
+      'culture': { ar: 'ثقافة', en: 'Culture' },
+      'technology': { ar: 'تكنولوجيا', en: 'Technology' },
+      'literature': { ar: 'أدب', en: 'Literature' },
+      'music': { ar: 'موسيقى', en: 'Music' },
+      'photography': { ar: 'تصوير', en: 'Photography' },
+      'crafts': { ar: 'حرفيات', en: 'Crafts' },
+      'food': { ar: 'طعام', en: 'Food' },
+      'fashion': { ar: 'أزياء', en: 'Fashion' },
+      'nature': { ar: 'طبيعة', en: 'Nature' },
+      'religion': { ar: 'دين', en: 'Religion' },
+      'sports': { ar: 'رياضة', en: 'Sports' },
+      'other': { ar: 'أخرى', en: 'Other' }
+    };
+
+    const eventData = festivalEvent.toJSON();
+    eventData.classification = classificationLabels[eventData.classification] || classificationLabels['other'];
+
     res.status(200).json({
       status: "success",
       message: "✅ Festival or Event found.",
-      data: festivalEvent
+      data: eventData
     });
   } catch (error) {
     next(error);
