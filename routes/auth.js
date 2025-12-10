@@ -36,19 +36,11 @@ const validateRegister = [
     .matches(/^[0-9]{9,15}$/)
     .withMessage("Please enter a valid phone"),
 
-  // كلمة المرور مطلوبة وقوية إذا provider = local (أو عندما لا يُحدد provider - الافتراضي)
+  // كلمة المرور مطلوبة إذا provider = local (أو عندما لا يُحدد provider - الافتراضي) - بحد أدنى 4 أحرف
   body("password")
     .if((value, { req }) => !req.body.provider || req.body.provider === "local")
-    .isStrongPassword({
-      minLength: 8,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 1,
-    })
-    .withMessage(
-      "Password must be at least 8 characters and contain uppercase, lowercase, number, and symbol"
-    ),
+    .isLength({ min: 4 })
+    .withMessage("Password must be at least 4 characters"),
 ];
 
 /* 
@@ -121,18 +113,10 @@ const validatePassword = [
     .matches(/^[0-9]+$/)
     .withMessage("Mobile number must contain only digits"),
 
-  // كلمة المرور الجديدة
+  // كلمة المرور الجديدة - بحد أدنى 4 أحرف
   body("newPassword")
-    .isStrongPassword({
-      minLength: 8,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 1,
-    })
-    .withMessage(
-      "Password must be at least 8 characters and contain uppercase, lowercase, number, and symbol"
-    ),
+    .isLength({ min: 4 })
+    .withMessage("Password must be at least 4 characters"),
 ];
 
 // مسار تسجيل دخول
