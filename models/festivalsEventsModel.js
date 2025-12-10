@@ -206,6 +206,54 @@ const FestivalsEvents = sequelize.define('FestivalsEvents', {
       
       // إرجاع تسمية "أخرى" كقيمة افتراضية إذا لم يتم تعيين التصنيف
       return classificationLabels[this.classification || 'other'];
+    },
+    
+    // Getter method للحصول على تسمية التصنيف باللغة العربية
+    classification_ar() {
+      const classificationLabels = {
+        'art': 'فنون',
+        'history': 'تاريخ',
+        'science': 'علوم',
+        'culture': 'ثقافة',
+        'technology': 'تكنولوجيا',
+        'literature': 'أدب',
+        'music': 'موسيقى',
+        'photography': 'تصوير',
+        'crafts': 'حرفيات',
+        'food': 'طعام',
+        'fashion': 'أزياء',
+        'nature': 'طبيعة',
+        'religion': 'دين',
+        'sports': 'رياضة',
+        'other': 'أخرى'
+      };
+      
+      // إرجاع تسمية "أخرى" كقيمة افتراضية إذا لم يتم تعيين التصنيف
+      return classificationLabels[this.classification || 'other'];
+    },
+    
+    // Getter method للحصول على تسمية التصنيف باللغة الإنجليزية
+    classification_en() {
+      const classificationLabels = {
+        'art': 'Art',
+        'history': 'History',
+        'science': 'Science',
+        'culture': 'Culture',
+        'technology': 'Technology',
+        'literature': 'Literature',
+        'music': 'Music',
+        'photography': 'Photography',
+        'crafts': 'Crafts',
+        'food': 'Food',
+        'fashion': 'Fashion',
+        'nature': 'Nature',
+        'religion': 'Religion',
+        'sports': 'Sports',
+        'other': 'Other'
+      };
+      
+      // إرجاع تسمية "Other" كقيمة افتراضية إذا لم يتم تعيين التصنيف
+      return classificationLabels[this.classification || 'other'];
     }
   }
 });
