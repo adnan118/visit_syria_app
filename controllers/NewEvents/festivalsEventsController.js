@@ -196,14 +196,22 @@ exports.getAllFestivalsEvents = async (req, res, next) => {
       offset
     });
 
+    // إضافة التصنيفات باللغتين العربية والإنجليزية إلى كل فعالية
+    const festivalsEventsWithClassifications = festivalsEvents.map(event => {
+      const eventData = event.toJSON();
+      eventData.classification_ar = event.classification_ar;
+      eventData.classification_en = event.classification_en;
+      return eventData;
+    });
+
     // حساب عدد الصفحات الإجمالي
     const totalPages = Math.ceil(count / limit);
 
     res.status(200).json({
       status: "success",
       message: "✅ All festivals and events retrieved successfully.",
-      count: festivalsEvents.length,
-      data: festivalsEvents,
+      count: festivalsEventsWithClassifications.length,
+      data: festivalsEventsWithClassifications,
       pagination: {
         currentPage: page,
         totalPages,
@@ -231,10 +239,15 @@ exports.getFestivalEventById = async (req, res, next) => {
       throw error;
     }
 
+    // إضافة التصنيفات باللغتين العربية والإنجليزية
+    const eventData = festivalEvent.toJSON();
+    eventData.classification_ar = festivalEvent.classification_ar;
+    eventData.classification_en = festivalEvent.classification_en;
+
     res.status(200).json({
       status: "success",
       message: "✅ Festival or Event found.",
-      data: festivalEvent
+      data: eventData
     });
   } catch (error) {
     next(error);
