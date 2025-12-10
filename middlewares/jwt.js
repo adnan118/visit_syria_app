@@ -151,6 +151,102 @@ function authJwt() {
         ),
         methods: ["GET"],
       },
+      // Public offers endpoints (no auth required for GET requests)
+      {
+        url: new RegExp(`^${API.replace(/\//g, "\\/")}/offers$`, "i"),
+        methods: ["GET"],
+      },
+      {
+        url: new RegExp(
+          `^${API.replace(/\//g, "\\/")}/offers/[0-9]+$`,
+          "i"
+        ),
+        methods: ["GET"],
+      },
+      // Public arts and culture endpoints (no auth required for GET requests)
+      {
+        url: new RegExp(`^${API.replace(/\//g, "\\/")}/arts-culture$`, "i"),
+        methods: ["GET"],
+      },
+      {
+        url: new RegExp(
+          `^${API.replace(/\//g, "\\/")}/arts-culture/[0-9]+$`,
+          "i"
+        ),
+        methods: ["GET"],
+      },
+      // Public cafeterias endpoints (no auth required for GET requests)
+      {
+        url: new RegExp(`^${API.replace(/\//g, "\\/")}/food-drinks/cafeterias$`, "i"),
+        methods: ["GET"],
+      },
+      {
+        url: new RegExp(
+          `^${API.replace(/\//g, "\\/")}/food-drinks/cafeterias/[0-9]+$`,
+          "i"
+        ),
+        methods: ["GET"],
+      },
+      // Public explore endpoints (no auth required for GET requests)
+      {
+        url: new RegExp(`^${API.replace(/\//g, "\\/")}/explore$`, "i"),
+        methods: ["GET"],
+      },
+      {
+        url: new RegExp(
+          `^${API.replace(/\//g, "\\/")}/explore/[0-9]+$`,
+          "i"
+        ),
+        methods: ["GET"],
+      },
+      // Public experiences endpoints (no auth required for GET requests)
+      {
+        url: new RegExp(`^${API.replace(/\//g, "\\/")}/experiences$`, "i"),
+        methods: ["GET"],
+      },
+      {
+        url: new RegExp(
+          `^${API.replace(/\//g, "\\/")}/experiences/[0-9]+$`,
+          "i"
+        ),
+        methods: ["GET"],
+      },
+      // Public public transport endpoints (no auth required for GET requests)
+      {
+        url: new RegExp(`^${API.replace(/\//g, "\\/")}/public-transport$`, "i"),
+        methods: ["GET"],
+      },
+      {
+        url: new RegExp(
+          `^${API.replace(/\//g, "\\/")}/public-transport/[0-9]+$`,
+          "i"
+        ),
+        methods: ["GET"],
+      },
+      // Public restaurants endpoints (no auth required for GET requests)
+      {
+        url: new RegExp(`^${API.replace(/\//g, "\\/")}/food-drinks/restaurants$`, "i"),
+        methods: ["GET"],
+      },
+      {
+        url: new RegExp(
+          `^${API.replace(/\//g, "\\/")}/food-drinks/restaurants/[0-9]+$`,
+          "i"
+        ),
+        methods: ["GET"],
+      },
+      // Public tour guides endpoints (no auth required for GET requests)
+      {
+        url: new RegExp(`^${API.replace(/\//g, "\\/")}/tour-guides$`, "i"),
+        methods: ["GET"],
+      },
+      {
+        url: new RegExp(
+          `^${API.replace(/\//g, "\\/")}/tour-guides/[0-9]+$`,
+          "i"
+        ),
+        methods: ["GET"],
+      },
     ],
   });
 }
