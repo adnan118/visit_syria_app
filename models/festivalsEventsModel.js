@@ -207,32 +207,6 @@ const FestivalsEvents = sequelize.define('FestivalsEvents', {
       // إرجاع تسمية "أخرى" كقيمة افتراضية إذا لم يتم تعيين التصنيف
       return classificationLabels[this.classification || 'other'];
     }
-  },
-  
-  // Add virtual fields
-  toJSON() {
-    const values = Object.assign({}, this.get());
-    const classificationLabels = {
-      'art': { ar: 'فنون', en: 'Art' },
-      'history': { ar: 'تاريخ', en: 'History' },
-      'science': { ar: 'علوم', en: 'Science' },
-      'culture': { ar: 'ثقافة', en: 'Culture' },
-      'technology': { ar: 'تكنولوجيا', en: 'Technology' },
-      'literature': { ar: 'أدب', en: 'Literature' },
-      'music': { ar: 'موسيقى', en: 'Music' },
-      'photography': { ar: 'تصوير', en: 'Photography' },
-      'crafts': { ar: 'حرفيات', en: 'Crafts' },
-      'food': { ar: 'طعام', en: 'Food' },
-      'fashion': { ar: 'أزياء', en: 'Fashion' },
-      'nature': { ar: 'طبيعة', en: 'Nature' },
-      'religion': { ar: 'دين', en: 'Religion' },
-      'sports': { ar: 'رياضة', en: 'Sports' },
-      'other': { ar: 'أخرى', en: 'Other' }
-    };
-    
-    // Add the classification object
-    values.classification = classificationLabels[this.getDataValue('classification') || 'other'];
-    return values;
   }
 });
 
