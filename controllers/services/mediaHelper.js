@@ -97,8 +97,8 @@ const IMAGE_COMPRESSION_SETTINGS = {
   },
   // إعدادات عامة
   resize: {
-    maxWidth: 1920, // العرض الأقصى
-    maxHeight: 1080, // الارتفاع الأقصى
+    maxWidth: 3840, // العرض الأقصى - 4K
+    maxHeight: 2160, // الارتفاع الأقصى - 4K
     fit: "inside", // طريقة التكيف
     withoutEnlargement: true, // عدم تكبير الصور الصغيرة
   },
@@ -113,29 +113,29 @@ const VIDEO_COMPRESSION_SETTINGS = {
   h264: {
     codec: "libx264",
     preset: "medium", // سرعة الضغط (ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow)
-    crf: 23, // جودة الفيديو (0-51، كلما قل الرقم كلما زادت الجودة)
-    maxrate: "2M", // معدل البت الأقصى
-    bufsize: "4M", // حجم البفر
+    crf: 18, // جودة الفيديو (0-51، كلما قل الرقم كلما زادت الجودة)
+    maxrate: "8M", // معدل البت الأقصى
+    bufsize: "16M", // حجم البفر
   },
   // إعدادات H.265 (HEVC)
   h265: {
     codec: "libx265",
     preset: "medium",
-    crf: 28, // جودة أعلى لـ H.265
-    maxrate: "1.5M",
-    bufsize: "3M",
+    crf: 23, // جودة أعلى لـ H.265
+    maxrate: "6M",
+    bufsize: "12M",
   },
   // إعدادات WebM (VP9)
   webm: {
     codec: "libvpx-vp9",
-    crf: 30,
-    maxrate: "1M",
-    bufsize: "2M",
+    crf: 25, // تحسين جودة VP9
+    maxrate: "4M",
+    bufsize: "8M",
   },
   // إعدادات عامة
   audio: {
     codec: "aac", // كودك الصوت
-    bitrate: "128k", // معدل البت للصوت
+    bitrate: "320k", // معدل البت للصوت - جودة أعلى
   },
   // إعدادات الحجم
   resize: {
@@ -213,47 +213,47 @@ const compressImage = async (inputPath, outputPath, format = "jpg") => {
       case "jpg":
       case "jpeg":
         compressionOptions = {
-          quality: 50, // تقليل الجودة للاختبار (0-100)
+          quality: 90, // تحسين الجودة (0-100)
           progressive: true,
           mozjpeg: true,
         };
-        console.log("استخدام إعدادات JPEG للضغط مع جودة 50%");
+        console.log("استخدام إعدادات JPEG للضغط مع جودة 90%");
         break;
       case "png":
         compressionOptions = {
-          quality: 50, // تقليل الجودة للاختبار (0-100)
+          quality: 90, // تحسين الجودة (0-100)
           progressive: true,
           compressionLevel: 9,
         };
-        console.log("استخدام إعدادات PNG للضغط مع جودة 50%");
+        console.log("استخدام إعدادات PNG للضغط مع جودة 90%");
         break;
       case "webp":
         compressionOptions = {
-          quality: 50, // تقليل الجودة للاختبار (0-100)
+          quality: 90, // تحسين الجودة (0-100)
           lossless: false,
           nearLossless: false,
         };
-        console.log("استخدام إعدادات WebP للضغط مع جودة 50%");
+        console.log("استخدام إعدادات WebP للضغط مع جودة 90%");
         break;
       default:
         compressionOptions = {
-          quality: 50, // تقليل الجودة للاختبار (0-100)
+          quality: 90, // تحسين الجودة (0-100)
           progressive: true,
           mozjpeg: true,
         };
-        console.log("استخدام إعدادات JPEG الافتراضية للضغط مع جودة 50%");
+        console.log("استخدام إعدادات JPEG الافتراضية للضغط مع جودة 90%");
     }
 
-    // إعدادات تغيير الحجم للاختبار
+    // إعدادات تغيير الحجم للحفاظ على الجودة
     const resizeOptions = {
-      maxWidth: 800, // تقليل العرض الأقصى للاختبار
-      maxHeight: 600, // تقليل الارتفاع الأقصى للاختبار
+      maxWidth: 3840, // الحفاظ على جودة عالية
+      maxHeight: 2160, // الحفاظ على جودة عالية
       fit: "inside",
       withoutEnlargement: true,
     };
 
     console.log("إعدادات الضغط المعدلة للاختبار:", compressionOptions);
-    console.log("إعدادات تغيير الحجم المعدلة للاختبار:", resizeOptions);
+    console.log("إعدادات تغيير الحجم للحفاظ على الجودة:", resizeOptions);
 
     console.log("بدء عملية الضغط باستخدام Sharp...");
     // ضغط الصورة مع الإعدادات المعدلة
